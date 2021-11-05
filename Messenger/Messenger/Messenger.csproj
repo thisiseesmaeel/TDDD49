@@ -55,6 +55,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ViewModels\Commands\ConnectCommand.cs" />
+    <Compile Include="ViewModels\Commands\ListenCommand.cs" />
     <Compile Include="ViewModels\Commands\UpdateFirstName.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
     <Compile Include="Views\UserView.xaml.cs">

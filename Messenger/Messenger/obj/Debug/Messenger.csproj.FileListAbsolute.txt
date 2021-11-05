@@ -18,7 +18,6 @@ C:\Users\hadia\source\repos\Messenger\Messenger\obj\Debug\Views\UserView.baml
 C:\Users\hadia\Skrivbord\TDDD49\Messenger\Messenger\bin\Debug\Messenger.exe.config
 C:\Users\hadia\Skrivbord\TDDD49\Messenger\Messenger\bin\Debug\Messenger.exe
 C:\Users\hadia\Skrivbord\TDDD49\Messenger\Messenger\bin\Debug\Messenger.pdb
-C:\Users\hadia\Skrivbord\TDDD49\Messenger\Messenger\obj\Debug\Messenger.csprojAssemblyReference.cache
 C:\Users\hadia\Skrivbord\TDDD49\Messenger\Messenger\obj\Debug\MainWindow.g.cs
 C:\Users\hadia\Skrivbord\TDDD49\Messenger\Messenger\obj\Debug\Views\UserView.g.cs
 C:\Users\hadia\Skrivbord\TDDD49\Messenger\Messenger\obj\Debug\App.g.cs

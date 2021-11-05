@@ -16,6 +16,8 @@
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
         <TextBlock Text="Welcome"
                    Grid.Row="0" Grid.Column="0" 
@@ -23,23 +25,44 @@
                    FontSize="35"
                    FontWeight="Bold"
                    HorizontalAlignment="Center"/>
-        <TextBlock Text="First name"
+        <TextBlock Text="IP"
                    Grid.Row="1" Grid.Column="0"
                    FontSize="28"
                    />
-        <TextBox x:Name="variable"
+        <TextBox x:Name="variable1"
                  Grid.Row="1" Grid.Column="2"
-                 Text="{Binding Test}"
+                 Text="127.0.0.1"
                  />
-        <Button x:Name="Btn"
-                Content="Click me!"
+        <TextBlock Text="Port"
+                   Grid.Row="2" Grid.Column="0"
+                   FontSize="28"
+                   />
+        <TextBox x:Name="variable2"
+                 Grid.Row="2" Grid.Column="1"
+                 Text="15000"
+                 />
+
+        <TextBlock Text="{Binding Path=MyMessage}"
+                   Grid.Row="3" Grid.Column="0" 
+                   Grid.ColumnSpan="2"
+                   FontSize="35"
+                   HorizontalAlignment="Center"/>
+
+        <Button x:Name="ListenBtn"
+                Content="Listen!"
                 FontSize="15"
                 FontWeight="Bold"
-                Grid.Row="3" Grid.Column="0"
-                Grid.ColumnSpan="2"
+                Grid.Row="4" Grid.Column="0"
                 Width="150"
-                HorizontalAlignment="Center"
-                Command="{Binding Path=UpdateFirstNameCommand}"
+                Command="{Binding Path=ListenCommand}"
+                />
+        <Button x:Name="ConnectBtn"
+                Content="Connect!"
+                FontSize="15"
+                FontWeight="Bold"
+                Grid.Row="4" Grid.Column="1"
+                Width="150"
+                Command="{Binding Path=ConnectCommand}"
                 />
     </Grid>
 </UserControl>
