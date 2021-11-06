@@ -1,0 +1,7 @@
+Chat applikation
+2 användare chattar med varandra
+chat inbjudan skickas först
+andra accepterar
+det ska gå att skicka båda texter och bilder
+portnummer och ip adress
+inget konto och server behövs
