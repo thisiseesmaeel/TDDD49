@@ -18,51 +18,63 @@
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
+
         <TextBlock Text="Welcome"
                    Grid.Row="0" Grid.Column="0" 
                    Grid.ColumnSpan="2"
                    FontSize="35"
                    FontWeight="Bold"
-                   HorizontalAlignment="Center"/>
-        <TextBlock Text="IP"
+                   HorizontalAlignment="Center" Width="152"/>
+
+        <TextBlock Text="Enter your name"
                    Grid.Row="1" Grid.Column="0"
-                   FontSize="28"
-                   />
-        <TextBox x:Name="variable1"
-                 Grid.Row="1" Grid.Column="2"
-                 Text="127.0.0.1"
-                 />
-        <TextBlock Text="Port"
+                   FontSize="28"/>
+
+        <TextBox   x:Name="variable"
+                   Text="{Binding Path=DisplayName}"
+                   Grid.Row="1" Grid.Column="1"
+                   FontSize="28" />
+
+        <TextBlock Text="Enter IP"
                    Grid.Row="2" Grid.Column="0"
+                   FontSize="28"/>
+
+        <TextBox   x:Name="variable1"
+                   Grid.Row="2" Grid.Column="1"
+                   Text="{Binding Path=IP}"
+                   FontSize="28"/>
+
+        <TextBlock Text="Enter Port"
+                   Grid.Row="3" Grid.Column="0"
                    FontSize="28"
                    />
-        <TextBox x:Name="variable2"
-                 Grid.Row="2" Grid.Column="1"
-                 Text="15000"
-                 />
+        <TextBox   x:Name="variable2"
+                   Grid.Row="3" Grid.Column="2"
+                   Text="{Binding Path=Port}"
+                   FontSize="28" />
 
         <TextBlock Text="{Binding Path=MyMessage}"
-                   Grid.Row="3" Grid.Column="0" 
-                   Grid.ColumnSpan="2"
+                   Grid.Row="4" Grid.Column="0"
                    FontSize="35"
-                   HorizontalAlignment="Center"/>
+                   HorizontalAlignment="Center"
+                   Grid.ColumnSpan="2" />
 
-        <Button x:Name="ListenBtn"
-                Content="Listen!"
-                FontSize="15"
-                FontWeight="Bold"
-                Grid.Row="4" Grid.Column="0"
-                Width="150"
-                Command="{Binding Path=ListenCommand}"
+        <Button    x:Name="ListenBtn"
+                   Content="Listen!"
+                   FontSize="15"
+                   FontWeight="Bold"
+                   Grid.Row="5" Grid.Column="0"
+                   Command="{Binding Path=ListenCommand}"
                 />
-        <Button x:Name="ConnectBtn"
-                Content="Connect!"
-                FontSize="15"
-                FontWeight="Bold"
-                Grid.Row="4" Grid.Column="1"
-                Width="150"
-                Command="{Binding Path=ConnectCommand}"
+        <Button    x:Name="ConnectBtn"
+                   Content="Connect!"
+                   FontSize="15"
+                   FontWeight="Bold"
+                   Grid.Row="5" Grid.Column="1"
+                   Command="{Binding Path=ConnectCommand}"
                 />
     </Grid>
+
 </UserControl>

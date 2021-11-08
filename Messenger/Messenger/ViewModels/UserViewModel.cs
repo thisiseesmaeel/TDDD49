@@ -18,6 +18,32 @@ namespace Messenger.ViewModels
             get { return _userModel; }
             set { _userModel = value; }
         }
+
+
+        private String _myMessage;
+        public String MyMessage
+        {
+            get { return _myMessage; }
+            set { _myMessage = value; OnPropertyChanged("MyMessage"); }
+        }
+        public String DisplayName
+        {
+            get { return UserModel.DisplayName; }
+            set { UserModel.DisplayName = value; OnPropertyChanged("DisplayName"); }
+        }
+        
+        public String IP
+        {
+            get { return UserModel.IP; }
+            set { UserModel.IP = value; OnPropertyChanged("IP"); }
+        }
+        public int Port
+        {
+            get { return UserModel.Port; }
+            set { UserModel.Port = value; OnPropertyChanged("Port"); }
+        }
+        
+
         public UserViewModel(User UserModel)
         {
             _updateFirstNameCommand = new UpdateFirstName(this);
@@ -25,18 +51,11 @@ namespace Messenger.ViewModels
             _connectCommand = new ConnectCommand(this);
             _userModel = UserModel;
             _userModel.PropertyChanged += myModel_PropertyChanged;
+            DisplayName = UserModel.DisplayName;
+            //Port = UserModel.Port;
+            //IP = UserModel.IP;
             MyMessage = "This is Empty";
         }
-
-
-        private String _myMessage;
-
-        public String MyMessage
-        {
-            get { return _myMessage; }
-            set { _myMessage = value; OnPropertyChanged("MyMessage"); }
-        }
-
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -51,20 +70,9 @@ namespace Messenger.ViewModels
         {
             if (e.PropertyName == "Message")
             {
-                MyMessage = _userModel.Message;
-                OnPropertyChanged("MyMessage");
+                MyMessage = UserModel.Message;
             }
         }
-
-        //private String _message;
-
-        //public String Message
-        //{
-        //    get { return _message; }
-        //    set { _message = value; OnPropertyChanged("Message"); }
-        //}
-        //ctr + c + k + c
-
 
         #region Commands
         private UpdateFirstName _updateFirstNameCommand;

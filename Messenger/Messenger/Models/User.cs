@@ -13,7 +13,7 @@ namespace Messenger.Models
     {
         public User()
         {
-            _firstName = "Hadi";
+            _displayName = "Hadi";
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -24,14 +24,30 @@ namespace Messenger.Models
                 PropertyChanged(this, new PropertyChangedEventArgs(PropertyName));
         }
 
-        private String _firstName;
+        private String _displayName;
 
-        public String Firstname
+        public String DisplayName
         {
-            get { return _firstName; }
-            set { _firstName = value; OnPropertyChanged("Firstname"); }
+            get { return _displayName; }
+            set { _displayName = value; OnPropertyChanged("DisplayName"); }
         }
 
+        private String _iP;
+        public String IP
+        {
+            get { return _iP; }
+            set { _iP = value; OnPropertyChanged("IP"); }
+        }
+
+
+        private int _port;
+        public int Port
+        {
+            get { return _port; }
+            set { _port = value; OnPropertyChanged("Port"); }
+        }
+
+        
         private String _message;
 
         public String Message
@@ -48,8 +64,8 @@ namespace Messenger.Models
             try
             {
                 // Set the TcpListener on port 13000.
-                Int32 port = 15000;
-                IPAddress localAddr = IPAddress.Parse("127.0.0.1");
+                Int32 port = Port;
+                IPAddress localAddr = IPAddress.Parse(IP);
 
                 // TcpListener server = new TcpListener(port);
                 server = new TcpListener(localAddr, port);
@@ -123,7 +139,7 @@ namespace Messenger.Models
                 // Note, for this client to work you need to have a TcpServer
                 // connected to the same address as specified by the server, port
                 // combination.
-                Int32 port = 15000;
+                Int32 port = Port;
                 TcpClient client = new TcpClient(server, port);
 
                 // Translate the passed message into ASCII and store it as a Byte array.

@@ -30,7 +30,7 @@ namespace Messenger.ViewModels.Commands
 
         public void Execute(object parameter)
         {
-            _userViewModel.UserModel.Connect();
+            _userViewModel.UserModel.Connect(server: _userViewModel.UserModel.IP);
         }
         #endregion
     }
