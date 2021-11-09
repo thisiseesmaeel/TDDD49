@@ -32,3 +32,6 @@ C:\Users\hadia\Skrivbord\TDDD49\Messenger\Messenger\obj\Debug\Messenger.csproj.G
 C:\Users\hadia\Skrivbord\TDDD49\Messenger\Messenger\obj\Debug\Messenger.csproj.CoreCompileInputs.cache
 C:\Users\hadia\Skrivbord\TDDD49\Messenger\Messenger\obj\Debug\Messenger.exe
 C:\Users\hadia\Skrivbord\TDDD49\Messenger\Messenger\obj\Debug\Messenger.pdb
+C:\Users\hadia\Skrivbord\TDDD49\Messenger\Messenger\bin\Debug\Newtonsoft.Json.dll
+C:\Users\hadia\Skrivbord\TDDD49\Messenger\Messenger\bin\Debug\Newtonsoft.Json.xml
+C:\Users\hadia\Skrivbord\TDDD49\Messenger\Messenger\obj\Debug\Messenger.csproj.CopyComplete

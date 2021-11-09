@@ -52,8 +52,6 @@ namespace Messenger.ViewModels
             _userModel = UserModel;
             _userModel.PropertyChanged += myModel_PropertyChanged;
             DisplayName = UserModel.DisplayName;
-            //Port = UserModel.Port;
-            //IP = UserModel.IP;
             MyMessage = "This is Empty";
         }
 

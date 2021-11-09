@@ -1,0 +1,15 @@
+{
+	"type":	"Establish"
+	"sender": "Blabla"
+	"date": "2018-10-22T08:31:00.000Z"
+	"message": ""
+}
+
+{
+	"type":	"Chat"
+	"sender": "Blabla"
+	"date": "2018-10-22T08:31:00.000Z"
+	"message": "Hello my friend!"
+}
+
+127.0.0.1
