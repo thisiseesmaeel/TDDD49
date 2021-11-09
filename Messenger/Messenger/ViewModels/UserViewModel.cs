@@ -7,6 +7,7 @@ using System.ComponentModel;
 using Messenger.Models;
 using System.Windows.Input;
 using Messenger.ViewModels.Commands;
+using System.Windows;
 
 namespace Messenger.ViewModels
 {
@@ -70,7 +71,38 @@ namespace Messenger.ViewModels
             {
                 MyMessage = UserModel.Message;
             }
+            else if(e.PropertyName == "ShowMessageBox")
+            {
+                ShowMessageBox();
+            }
         }
+
+        private void ShowMessageBox(string name = "Blabla")
+        {
+            // Configure the message box to be displayed
+            string messageBoxText = $"Do you want to chat with {name}?"; //Name of the person should be added as well later.
+            string caption = "Permission";
+            MessageBoxButton button = MessageBoxButton.YesNo;
+            MessageBoxImage icon = MessageBoxImage.Question;
+
+            // Display message box and save the result
+            MessageBoxResult result = MessageBox.Show(messageBoxText, caption, button, icon);
+
+            // Process message box results
+            switch (result)
+            {
+                case MessageBoxResult.Yes:
+                    // User pressed Yes button
+                    // ...
+                    break;
+                case MessageBoxResult.No:
+                    // User pressed No button
+                    // ...
+                    break;
+            }
+
+        }
+
 
         #region Commands
         private UpdateFirstName _updateFirstNameCommand;

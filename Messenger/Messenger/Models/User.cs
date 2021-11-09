@@ -13,7 +13,9 @@ namespace Messenger.Models
     public class User : INotifyPropertyChanged
     {
         public User()
-        {}
+        {
+            ShowMessageBox = false;
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -54,6 +56,16 @@ namespace Messenger.Models
             get { return _message; }
             set { _message = value; OnPropertyChanged("Message"); }
         }
+
+        private bool _showMessageBox;
+
+        public bool ShowMessageBox
+        {
+            get { return _showMessageBox; }
+            set { _showMessageBox = value; OnPropertyChanged("ShowMessageBox"); }
+        }
+
+
 
         public void Listen()
         {
@@ -99,9 +111,13 @@ namespace Messenger.Models
                             // Translate data bytes to a ASCII string.
                             data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
                             Console.WriteLine("Received: {0}", data);
-
-                            Message Msg = JsonConvert.DeserializeObject<Message>(data);
                             
+                            Message Msg = JsonConvert.DeserializeObject<Message>(data);
+                            if(Msg.RequestType == "Establish")
+                            {
+                                
+                                ShowMessageBox = true;
+                            }
                             // Process the data sent by the client.
                             data = data.ToUpper();
 
@@ -146,8 +162,8 @@ namespace Messenger.Models
 
         public void Connect(String message = "Hello World!", String server = "127.0.0.1")
         {
-            Message initializeMsg = new Message("Establish", "Jack", new DateTime(), "");
-            message = JsonConvert.SerializeObject(initializeMsg);
+            Message Msg = new Message("Establish", "Jack", new DateTime(), "");
+            message = JsonConvert.SerializeObject(Msg);
             
             Action action = () =>
             {
