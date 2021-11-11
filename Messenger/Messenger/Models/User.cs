@@ -84,6 +84,14 @@ namespace Messenger.Models
             set { _showSocketExceptionMessageBox = value; OnPropertyChanged("ShowSocketExceptionMessageBox"); }
         }
 
+        private bool _responseToRequest;
+
+        public bool ResponseToRequest
+        {
+            get { return _responseToRequest; }
+            set { _responseToRequest = value; OnPropertyChanged("ResponseToRequest"); }
+        }
+
 
 
         public void Listen()
@@ -139,11 +147,20 @@ namespace Messenger.Models
                                 if (AcceptRequest)
                                 {
                                     Message = "Connection is now Established!";
-                                    // yagan popup ravan ko da nafare dega
+                                    
 
+                                    // Send back a response.
+                                    Message response = new Message("RequestAccepted", DisplayName, new DateTime(), " ");
+                                    byte[] msg = System.Text.Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(response));
+                                    stream.Write(msg, 0, msg.Length);
                                 }
                                 else
                                 {
+                                    // Send back a response.
+                                    Message response = new Message("RequestDenied", DisplayName, new DateTime(), " ");
+                                    byte[] msg = System.Text.Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(response));
+                                    stream.Write(msg, 0, msg.Length);
+
                                     // Shutdown and end connection
                                     client.Close();
                                     break;
@@ -234,7 +251,21 @@ namespace Messenger.Models
                     responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
 
                     this.Message = responseData;
-                    Console.WriteLine("Received: {0}", responseData);
+
+                    Message ResponseMsg = JsonConvert.DeserializeObject<Message>(responseData);
+                    if(ResponseMsg.RequestType == "RequestAccepted")
+                    {
+                        // Feedback here
+                        ResponseToRequest = true;
+                        Listen();
+                    }
+                    else if(ResponseMsg.RequestType == "RequestDenied")
+                    {
+                        // Feedback here
+                        ResponseToRequest = false;
+                    }
+
+                    //Console.WriteLine("Received: {0}", responseData);
 
                     // Close everything.
                     stream.Close();

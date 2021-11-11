@@ -79,6 +79,9 @@ namespace Messenger.ViewModels
                 case "ShowSocketExceptionMessageBox":
                     ShowSocketExceptionMessageBox();
                     break;
+                case "ResponseToRequest":
+                    ShowResponseToRequestMessageBox();
+                    break;
                 default:
                     break;
             }
@@ -115,30 +118,25 @@ namespace Messenger.ViewModels
         private void ShowSocketExceptionMessageBox()
         {
             // Configure the message box to be displayed
-            string messageBoxText = $"There is no one listening on this IP and port?"; //Name of the person should be added as well later.
+            string messageBoxText = "There is no one listening on this IP and port!";
             string caption = "Warning";
             MessageBoxButton button = MessageBoxButton.OK;
             MessageBoxImage icon = MessageBoxImage.Warning;
             MessageBox.Show(messageBoxText, caption, button, icon);
+        }
 
-            /*
-            // Display message box and save the result
-            MessageBoxResult result = MessageBox.Show(messageBoxText, caption, button, icon);
-
-            // Process message box results
-            switch (result)
+        private void ShowResponseToRequestMessageBox()
+        {
+            // Configure the message box to be displayed
+            string messageBoxText = "Your request is accepted.";
+            if (!UserModel.ResponseToRequest)
             {
-                case MessageBoxResult.OK:
-                    UserModel.AcceptRequest = true;
-                    break;
-                case MessageBoxResult.No:
-                    UserModel.AcceptRequest = false;
-                    break;
-                default:
-                    UserModel.AcceptRequest = false;
-                    break;
-            }*/
-
+                messageBoxText = "Your request is denied.";
+            }
+            string caption = "Information";
+            MessageBoxButton button = MessageBoxButton.OK;
+            MessageBoxImage icon = MessageBoxImage.Information;
+            MessageBox.Show(messageBoxText, caption, button, icon);
         }
 
 
