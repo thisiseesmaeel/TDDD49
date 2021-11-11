@@ -12,9 +12,12 @@ namespace Messenger.Models
 {
     public class User : INotifyPropertyChanged
     {
+        Random rd = new Random();
+
         public User()
         {
-            ShowMessageBox = false;
+            _port = 14000;
+            _iP = "127.0.0.1";
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -57,12 +60,28 @@ namespace Messenger.Models
             set { _message = value; OnPropertyChanged("Message"); }
         }
 
-        private bool _showMessageBox;
+        private bool _showInvitationMessageBox;
 
-        public bool ShowMessageBox
+        public bool ShowInvitationMessageBox
         {
-            get { return _showMessageBox; }
-            set { _showMessageBox = value; OnPropertyChanged("ShowMessageBox"); }
+            get { return _showInvitationMessageBox; }
+            set { _showInvitationMessageBox = value; OnPropertyChanged("ShowInvitationMessageBox"); }
+        }
+
+        private bool _acceptRequest;
+
+        public bool AcceptRequest
+        {
+            get { return _acceptRequest; }
+            set { _acceptRequest = value; }
+        }
+
+        private bool _showSocketExceptionMessageBox;
+
+        public bool ShowSocketExceptionMessageBox
+        {
+            get { return _showSocketExceptionMessageBox; }
+            set { _showSocketExceptionMessageBox = value; OnPropertyChanged("ShowSocketExceptionMessageBox"); }
         }
 
 
@@ -110,28 +129,41 @@ namespace Messenger.Models
                         {
                             // Translate data bytes to a ASCII string.
                             data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
-                            Console.WriteLine("Received: {0}", data);
-                            
+                            // Console.WriteLine("Received: {0}", data);
+
                             Message Msg = JsonConvert.DeserializeObject<Message>(data);
-                            if(Msg.RequestType == "Establish")
+                            if (Msg.RequestType == "Establish")
                             {
-                                
-                                ShowMessageBox = true;
+                                Message = rd.Next(0, 100).ToString() + " Establish is detected";
+                                ShowInvitationMessageBox = true;
+                                if (AcceptRequest)
+                                {
+                                    Message = "Connection is now Established!";
+                                    // yagan popup ravan ko da nafare dega
+
+                                }
+                                else
+                                {
+                                    // Shutdown and end connection
+                                    client.Close();
+                                    break;
+                                }
+
                             }
-                            // Process the data sent by the client.
-                            data = data.ToUpper();
+                            else if (Msg.RequestType == "Chat")
+                            {
 
-                            byte[] msg = System.Text.Encoding.ASCII.GetBytes(data);
+                                // Process the data sent by the client.
+                                // data = data.ToUpper();
 
-                            // Send back a response.
-                            stream.Write(msg, 0, msg.Length);
-                            Console.WriteLine("Sent: {0}", data);
+                                // byte[] msg = System.Text.Encoding.ASCII.GetBytes(data);
+
+                                // Send back a response.
+                                // stream.Write(msg, 0, msg.Length);
+                                // Console.WriteLine("Sent: {0}", data);
+                            }
                         }
-
-                        // Shutdown and end connection
-                        client.Close();
                     }
-                    
                 }
                 catch (SocketException e)
                 {
@@ -208,13 +240,15 @@ namespace Messenger.Models
                     stream.Close();
                     client.Close();
                 }
-                catch (ArgumentNullException e)
-                {
-                    Console.WriteLine("ArgumentNullException: {0}", e);
-                }
                 catch (SocketException e)
                 {
                     Console.WriteLine("SocketException: {0}", e);
+                    ShowSocketExceptionMessageBox = true;
+
+                }
+                catch (ArgumentNullException e)
+                {
+                    Console.WriteLine("ArgumentNullException: {0}", e);
                 }
             };
 

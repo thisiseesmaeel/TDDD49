@@ -67,17 +67,25 @@ namespace Messenger.ViewModels
 
         private void myModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "Message")
+            switch (e.PropertyName) 
             {
-                MyMessage = UserModel.Message;
+                case "Message":
+                    MyMessage = UserModel.Message;
+                    break;
+                case "ShowInvitationMessageBox":
+                    if(UserModel.ShowInvitationMessageBox)
+                        ShowInvitationMessageBox();
+                    break;
+                case "ShowSocketExceptionMessageBox":
+                    ShowSocketExceptionMessageBox();
+                    break;
+                default:
+                    break;
             }
-            else if(e.PropertyName == "ShowMessageBox")
-            {
-                ShowMessageBox();
-            }
+
         }
 
-        private void ShowMessageBox(string name = "Blabla")
+        private void ShowInvitationMessageBox(string name = "Blabla")
         {
             // Configure the message box to be displayed
             string messageBoxText = $"Do you want to chat with {name}?"; //Name of the person should be added as well later.
@@ -92,14 +100,44 @@ namespace Messenger.ViewModels
             switch (result)
             {
                 case MessageBoxResult.Yes:
-                    // User pressed Yes button
-                    // ...
+                    UserModel.AcceptRequest = true;
                     break;
                 case MessageBoxResult.No:
-                    // User pressed No button
-                    // ...
+                    UserModel.AcceptRequest = false;
+                    break;
+                default:
+                    UserModel.AcceptRequest = false;
                     break;
             }
+
+        }
+
+        private void ShowSocketExceptionMessageBox()
+        {
+            // Configure the message box to be displayed
+            string messageBoxText = $"There is no one listening on this IP and port?"; //Name of the person should be added as well later.
+            string caption = "Warning";
+            MessageBoxButton button = MessageBoxButton.OK;
+            MessageBoxImage icon = MessageBoxImage.Warning;
+            MessageBox.Show(messageBoxText, caption, button, icon);
+
+            /*
+            // Display message box and save the result
+            MessageBoxResult result = MessageBox.Show(messageBoxText, caption, button, icon);
+
+            // Process message box results
+            switch (result)
+            {
+                case MessageBoxResult.OK:
+                    UserModel.AcceptRequest = true;
+                    break;
+                case MessageBoxResult.No:
+                    UserModel.AcceptRequest = false;
+                    break;
+                default:
+                    UserModel.AcceptRequest = false;
+                    break;
+            }*/
 
         }
 
