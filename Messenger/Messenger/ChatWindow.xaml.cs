@@ -10,23 +10,18 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Messenger.ViewModels;
-using Messenger.Models;
 
-namespace Messenger.Views
+namespace Messenger
 {
     /// <summary>
-    /// Interaction logic for UserView.xaml
+    /// Interaction logic for ChatWindow.xaml
     /// </summary>
-    public partial class UserView : UserControl
+    public partial class ChatWindow : Window
     {
-        public UserView()
+        public ChatWindow()
         {
             InitializeComponent();
-            
-            this.DataContext = new UserViewModel(new User());
         }
     }
 }

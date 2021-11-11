@@ -25,7 +25,13 @@ namespace Messenger
         public MainWindow()
         {
             InitializeComponent();
-            //this.DataContext = new UserViewModel();
+            
+            /*
+            Window test = new ChatWindow();
+            test.Show();
+
+            this.Close();
+            */
         }
     }
 }

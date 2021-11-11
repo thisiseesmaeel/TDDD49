@@ -12,21 +12,18 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Messenger.ViewModels;
-using Messenger.Models;
 
 namespace Messenger.Views
 {
     /// <summary>
-    /// Interaction logic for UserView.xaml
+    /// Interaction logic for ChatView.xaml
     /// </summary>
-    public partial class UserView : UserControl
+    public partial class ChatView : UserControl
     {
-        public UserView()
+        public ChatView()
         {
             InitializeComponent();
-            
-            this.DataContext = new UserViewModel(new User());
+
         }
     }
 }

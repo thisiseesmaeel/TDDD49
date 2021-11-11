@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\hadia\Skrivbord\TDDD49\Messenger\Messenger\App.xaml
-2-962522082
+4-311523528
 
-12-761105920
+15-1193900756
 14417280720
-MainWindow.xaml;Views\UserView.xaml;
+ChatWindow.xaml;MainWindow.xaml;Views\ChatView.xaml;Views\UserView.xaml;
 
 False
 

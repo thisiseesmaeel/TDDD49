@@ -104,6 +104,8 @@ namespace Messenger.ViewModels
             {
                 case MessageBoxResult.Yes:
                     UserModel.AcceptRequest = true;
+                    // should navigate to a new ViewModel
+                    
                     break;
                 case MessageBoxResult.No:
                     UserModel.AcceptRequest = false;
@@ -124,7 +126,7 @@ namespace Messenger.ViewModels
             MessageBoxImage icon = MessageBoxImage.Warning;
             MessageBox.Show(messageBoxText, caption, button, icon);
         }
-
+        
         private void ShowResponseToRequestMessageBox()
         {
             // Configure the message box to be displayed
