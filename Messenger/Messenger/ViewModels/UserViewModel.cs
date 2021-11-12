@@ -11,7 +11,7 @@ using System.Windows;
 
 namespace Messenger.ViewModels
 {
-    public class UserViewModel: INotifyPropertyChanged
+    public class UserViewModel: BaseViewModel, INotifyPropertyChanged
     {
         private User _userModel;
         public User UserModel
@@ -43,7 +43,15 @@ namespace Messenger.ViewModels
             get { return UserModel.Port; }
             set { UserModel.Port = value; OnPropertyChanged("Port"); }
         }
-        
+
+        private string _nextPage;
+
+        public string NextPage
+        {
+            get { return _nextPage; }
+            set { _nextPage = value; OnPropertyChanged("NextPage"); }
+        }
+
 
         public UserViewModel(User UserModel)
         {
@@ -57,11 +65,13 @@ namespace Messenger.ViewModels
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+        public delegate void SwitchToChatHandler();
+        public event SwitchToChatHandler UserIntendsToChatEvent;
 
         private void OnPropertyChanged(String PropertyName)
         {
-            if(PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(PropertyName));
+            if(this.PropertyChanged != null)
+                this.PropertyChanged(this, new PropertyChangedEventArgs(PropertyName));
         }
 
 
@@ -105,7 +115,7 @@ namespace Messenger.ViewModels
                 case MessageBoxResult.Yes:
                     UserModel.AcceptRequest = true;
                     // should navigate to a new ViewModel
-                    
+                    UserIntendsToChatEvent();
                     break;
                 case MessageBoxResult.No:
                     UserModel.AcceptRequest = false;
@@ -131,14 +141,28 @@ namespace Messenger.ViewModels
         {
             // Configure the message box to be displayed
             string messageBoxText = "Your request is accepted.";
+            bool Accepted = true;
             if (!UserModel.ResponseToRequest)
             {
                 messageBoxText = "Your request is denied.";
+                Accepted = false;
             }
             string caption = "Information";
             MessageBoxButton button = MessageBoxButton.OK;
             MessageBoxImage icon = MessageBoxImage.Information;
-            MessageBox.Show(messageBoxText, caption, button, icon);
+            
+            MessageBoxResult result = MessageBox.Show(messageBoxText, caption, button, icon);
+            // Process message box results
+            switch (result)
+            {
+                case MessageBoxResult.OK:
+                    // should navigate to a new ViewModel
+                    if(Accepted)
+                        UserIntendsToChatEvent();
+                    break;
+                default:
+                    break;
+            }
         }
 
 
@@ -150,6 +174,7 @@ namespace Messenger.ViewModels
         public ICommand ListenCommand => _listenCommand;
 
         private ConnectCommand _connectCommand;
+
         public ICommand ConnectCommand => _connectCommand;
 
         #endregion

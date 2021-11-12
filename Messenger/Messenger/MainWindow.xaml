@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Messenger"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"
-        xmlns:vw="clr-namespace:Messenger.Views">
-    <vw:UserView></vw:UserView>
+        Title="MainWindow" Height="650" Width="800"
+        >
+
+    <ContentControl Content="{Binding SelectedViewModel}"/>
+
 </Window>

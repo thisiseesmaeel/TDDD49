@@ -35,8 +35,6 @@ C:\Users\hadia\Skrivbord\TDDD49\Messenger\Messenger\obj\Debug\Messenger.csproj.C
 C:\Users\hadia\Skrivbord\TDDD49\Messenger\Messenger\obj\Debug\Messenger.csproj.CopyComplete
 C:\Users\hadia\Skrivbord\TDDD49\Messenger\Messenger\obj\Debug\Messenger.exe
 C:\Users\hadia\Skrivbord\TDDD49\Messenger\Messenger\obj\Debug\Messenger.pdb
-C:\Users\hadia\Skrivbord\TDDD49\Messenger\Messenger\obj\Debug\ChatWindow.g.cs
 C:\Users\hadia\Skrivbord\TDDD49\Messenger\Messenger\obj\Debug\Views\ChatView.g.cs
-C:\Users\hadia\Skrivbord\TDDD49\Messenger\Messenger\obj\Debug\ChatWindow.baml
 C:\Users\hadia\Skrivbord\TDDD49\Messenger\Messenger\obj\Debug\Views\ChatView.baml
-C:\Users\hadia\Skrivbord\TDDD49\Messenger\Messenger\obj\Debug\Messenger.csprojAssemblyReference.cache
+C:\Users\hadia\Skrivbord\TDDD49\Messenger\Messenger\obj\Debug\App.baml

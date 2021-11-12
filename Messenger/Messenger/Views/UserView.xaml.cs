@@ -26,7 +26,7 @@ namespace Messenger.Views
         {
             InitializeComponent();
             
-            this.DataContext = new UserViewModel(new User());
+            //this.DataContext = new UserViewModel(new User());
         }
     }
 }
