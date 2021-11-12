@@ -38,3 +38,4 @@ C:\Users\hadia\Skrivbord\TDDD49\Messenger\Messenger\obj\Debug\Messenger.pdb
 C:\Users\hadia\Skrivbord\TDDD49\Messenger\Messenger\obj\Debug\Views\ChatView.g.cs
 C:\Users\hadia\Skrivbord\TDDD49\Messenger\Messenger\obj\Debug\Views\ChatView.baml
 C:\Users\hadia\Skrivbord\TDDD49\Messenger\Messenger\obj\Debug\App.baml
+C:\Users\hadia\Skrivbord\TDDD49\Messenger\Messenger\obj\Debug\Messenger.csprojAssemblyReference.cache
