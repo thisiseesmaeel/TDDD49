@@ -55,7 +55,7 @@
                    Text="{Binding Path=Port}"
                    FontSize="28" />
 
-        <TextBlock Text="{Binding Path=MyMessage}"
+        <TextBlock Text="HardCoded"
                    Grid.Row="4" Grid.Column="0"
                    FontSize="15"
                    HorizontalAlignment="Center"

@@ -7,8 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Threading;
 using Messenger.Models;
+using Messenger.ViewModels.Commands;
 
 namespace Messenger.ViewModels
 {
@@ -16,10 +18,11 @@ namespace Messenger.ViewModels
     {
         public ObservableCollection<Message> Chatlog { set; get; }
 
-        private User UserModel { set; get; }
+        public User UserModel { set; get; }
 
         public ChatViewModel(User UM)
         {
+            _chatCommand = new ChatCommand(this);
             UserModel = UM;
             UserModel.PropertyChanged += myModel_PropertyChanged;
             Chatlog = new ObservableCollection<Message>();
@@ -31,7 +34,9 @@ namespace Messenger.ViewModels
             switch (e.PropertyName)
             {
                 case "Message":
-                    //Chatlog.Add(UserModel.Message);
+                    App.Current.Dispatcher.Invoke(() => { Chatlog.Add(UserModel.Message); });
+                    //Dispatcher.CurrentDispatcher.Invoke(() => { Chatlog.Add(UserModel.Message); });
+
                     break;
                 default:
                     break;
@@ -65,5 +70,7 @@ namespace Messenger.ViewModels
             }
         }
 
+        private ChatCommand _chatCommand;
+        public ICommand ChatCommand => _chatCommand;
     }
 }

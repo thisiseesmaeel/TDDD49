@@ -22,7 +22,7 @@
                     <DataTemplate>
                         <StackPanel VerticalAlignment="Top"
                                     FlowDirection="LeftToRight">
-                            <TextBlock Text="{Binding Path=Value}"/>
+                            <TextBlock Text="{Binding Path=MessageText}"/>
                            
                         </StackPanel>
                     </DataTemplate>
@@ -40,13 +40,17 @@
         BorderThickness="2"
         Grid.Row="1" Grid.Column="0"
         Height="50">
-            <TextBox Text="Type something"/>
+            <TextBox x:Name ="InputField"
+                     Text="Type something"/>
         </Border>
         <Button
             Content="Send"
             Width="100"
             Height="50"
-            Grid.Row="1" Grid.Column="1"/>
+            Grid.Row="1" Grid.Column="1"
+            Command="{Binding Path=ChatCommand}" 
+            CommandParameter="{Binding Text, ElementName=InputField, Mode=OneWay}"
+            />
 
 
 

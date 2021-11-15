@@ -51,22 +51,16 @@ namespace Messenger.Models
             set { _port = value; OnPropertyChanged("Port"); }
         }
 
+     
         
-        private String _message;
-        public String Message
-        {
-           get { return _message; }
-            set { _message = value; OnPropertyChanged("Message"); }
-        }
-        /*
         private Message _message;
 
         public Message Message
         {
             get { return _message; }
-            set { _message1 = value; }
+            set { _message = value; OnPropertyChanged("Message"); }
         }
-        */
+        
 
         private bool _showInvitationMessageBox;
 
@@ -99,7 +93,6 @@ namespace Messenger.Models
             get { return _responseToRequest; }
             set { _responseToRequest = value; OnPropertyChanged("ResponseToRequest"); }
         }
-
 
 
         public void Listen()
@@ -150,13 +143,10 @@ namespace Messenger.Models
                             Message Msg = JsonConvert.DeserializeObject<Message>(data);
                             if (Msg.RequestType == "Establish")
                             {
-                                Message = rd.Next(0, 100).ToString() + " Establish is detected";
+                               
                                 ShowInvitationMessageBox = true;
                                 if (AcceptRequest)
-                                {
-                                    Message = "Connection is now Established!";
-                                    
-
+                                {                                    
                                     // Send back a response.
                                     Message response = new Message("RequestAccepted", DisplayName, new DateTime(), " ");
                                     byte[] msg = System.Text.Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(response));
@@ -177,7 +167,7 @@ namespace Messenger.Models
                             }
                             else if (Msg.RequestType == "Chat")
                             {
-
+                                Message = Msg;
                                 // Process the data sent by the client.
                                 // data = data.ToUpper();
 
@@ -217,10 +207,10 @@ namespace Messenger.Models
             Task.Factory.StartNew(action);
         }
 
-        public void Connect(String message = "Hello World!", String server = "127.0.0.1")
+        public void Connect()
         {
             Message Msg = new Message("Establish", "Jack", new DateTime(), "");
-            message = JsonConvert.SerializeObject(Msg);
+            string message = JsonConvert.SerializeObject(Msg);
             
             Action action = () =>
             {
@@ -231,7 +221,7 @@ namespace Messenger.Models
                     // connected to the same address as specified by the server, port
                     // combination.
                     Int32 port = Port;
-                    TcpClient client = new TcpClient(server, port);
+                    TcpClient client = new TcpClient(IP, port);
 
                     // Translate the passed message into ASCII and store it as a Byte array.
                     Byte[] data = System.Text.Encoding.ASCII.GetBytes(message);
@@ -257,8 +247,6 @@ namespace Messenger.Models
                     // Read the first batch of the TcpServer response bytes.
                     Int32 bytes = stream.Read(data, 0, data.Length);
                     responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
-
-                    this.Message = responseData;
 
                     Message ResponseMsg = JsonConvert.DeserializeObject<Message>(responseData);
                     if(ResponseMsg.RequestType == "RequestAccepted")
@@ -295,6 +283,41 @@ namespace Messenger.Models
             Console.Read();
 
             Task.Factory.StartNew(action);
+        }
+
+        public void Chat(string message)
+        {
+            try
+            {
+                Message Msg = new Message("Chat", "Jack", new DateTime(), message);
+                message = JsonConvert.SerializeObject(Msg);
+                // Create a TcpClient.
+                // Note, for this client to work you need to have a TcpServer
+                // connected to the same address as specified by the server, port
+                // combination.
+                Int32 port = Port;
+                TcpClient client = new TcpClient(IP, port);
+
+                // Translate the passed message into ASCII and store it as a Byte array.
+                Byte[] data = System.Text.Encoding.ASCII.GetBytes(message);
+
+                NetworkStream stream = client.GetStream();
+
+                // Send the message to the connected TcpServer.
+                stream.Write(data, 0, data.Length);
+
+                // Close everything.
+                stream.Close();
+                client.Close();
+            }
+            catch (ArgumentNullException e)
+            {
+                Console.WriteLine("ArgumentNullException: {0}", e);
+            }
+            catch (SocketException e)
+            {
+                Console.WriteLine("SocketException: {0}", e);
+            }
         }
     }
 }

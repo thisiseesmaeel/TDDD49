@@ -19,14 +19,6 @@ namespace Messenger.ViewModels
             get { return _userModel; }
             set { _userModel = value; }
         }
-
-
-        private String _myMessage;
-        public String MyMessage
-        {
-            get { return _myMessage; }
-            set { _myMessage = value; OnPropertyChanged("MyMessage"); }
-        }
         public String DisplayName
         {
             get { return UserModel.DisplayName; }
@@ -55,13 +47,11 @@ namespace Messenger.ViewModels
 
         public UserViewModel(User UserModel)
         {
-            _updateFirstNameCommand = new UpdateFirstName(this);
             _listenCommand = new ListenCommand(this);
             _connectCommand = new ConnectCommand(this);
             _userModel = UserModel;
             _userModel.PropertyChanged += myModel_PropertyChanged;
             DisplayName = UserModel.DisplayName;
-            MyMessage = "This is Empty";
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -79,9 +69,6 @@ namespace Messenger.ViewModels
         {
             switch (e.PropertyName) 
             {
-                case "Message":
-                    MyMessage = UserModel.Message;
-                    break;
                 case "ShowInvitationMessageBox":
                     if(UserModel.ShowInvitationMessageBox)
                         ShowInvitationMessageBox();
@@ -167,9 +154,6 @@ namespace Messenger.ViewModels
 
 
         #region Commands
-        private UpdateFirstName _updateFirstNameCommand;
-        public ICommand UpdateFirstNameCommand => _updateFirstNameCommand;
-
         private ListenCommand _listenCommand;
         public ICommand ListenCommand => _listenCommand;
 
