@@ -15,6 +15,7 @@ namespace Messenger.ViewModels
             var UserViewModel = new UserViewModel(new User());
             UserViewModel.UserIntendsToChatEvent += new UserViewModel.SwitchToChatHandler(MyHandler);
             SelectedViewModel = UserViewModel;
+            UserModel = UserViewModel.UserModel;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -26,6 +27,10 @@ namespace Messenger.ViewModels
             set { _selectedViewModel = value; OnPropertyChanged("SelectedViewModel"); }
         }
 
+        private User UserModel { set; get; }
+
+
+
         private void OnPropertyChanged(String PropertyName)
         {
             if (this.PropertyChanged != null)
@@ -34,7 +39,7 @@ namespace Messenger.ViewModels
 
         private void MyHandler()
         {
-            SelectedViewModel = new ChatViewModel();
+            SelectedViewModel = new ChatViewModel(UserModel);
         }
     }
 }

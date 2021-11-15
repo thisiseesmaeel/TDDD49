@@ -17,20 +17,24 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Border CornerRadius="3" BorderBrush="Gray" BorderThickness="2" DockPanel.Dock="Top">
-            <StackPanel
-            Height="450"
-            Grid.Row="0" Grid.Column="0"
-            
-           >
-
-            </StackPanel>
+            <ItemsControl ItemsSource="{Binding Path=Chatlog}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel VerticalAlignment="Top"
+                                    FlowDirection="LeftToRight">
+                            <TextBlock Text="{Binding Path=Value}"/>
+                           
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </Border>
         <Button
                 Content="Logout"
                 Width="100"
                 Height="50"
                 Margin="0,0,0,400"
-                Grid.Row="0" Grid.Column="1"/>
+                Grid.Row="0" Grid.Column="1" Background="{x:Null}"/>
 
         <Border CornerRadius="3" BorderBrush="Gray"
         BorderThickness="2"

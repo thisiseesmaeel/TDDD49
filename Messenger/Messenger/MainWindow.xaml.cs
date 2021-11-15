@@ -26,6 +26,8 @@ namespace Messenger
         {
             InitializeComponent();
             DataContext = new MainViewModel();
+            //Closing += test()
         }
+
     }
 }

@@ -24,6 +24,13 @@ namespace Messenger.Views
         {
             InitializeComponent();
 
+            /*
+            TextBlock TestTextBlock = new TextBlock();
+            TestTextBlock.Text = "Hello, World!";
+            
+            ChatStackPanel.Children.Add(TestTextBlock);*/
+
+
         }
     }
 }

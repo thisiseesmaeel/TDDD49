@@ -53,12 +53,20 @@ namespace Messenger.Models
 
         
         private String _message;
-
         public String Message
         {
-            get { return _message; }
+           get { return _message; }
             set { _message = value; OnPropertyChanged("Message"); }
         }
+        /*
+        private Message _message;
+
+        public Message Message
+        {
+            get { return _message; }
+            set { _message1 = value; }
+        }
+        */
 
         private bool _showInvitationMessageBox;
 
