@@ -13,6 +13,7 @@ namespace Messenger.Models
     public class User : INotifyPropertyChanged
     {
         Random rd = new Random();
+        TcpClient client;
 
         public User()
         {
@@ -124,7 +125,7 @@ namespace Messenger.Models
 
                         // Perform a blocking call to accept requests.
                         // You could also use server.AcceptSocket() here.
-                        TcpClient client = server.AcceptTcpClient();
+                        client = server.AcceptTcpClient();
                         Console.WriteLine("Connected!");
 
                         data = null;
@@ -161,7 +162,7 @@ namespace Messenger.Models
                                     stream.Write(msg, 0, msg.Length);
 
                                     // Shutdown and end connection
-                                    client.Close();
+                                    //client.Close();
                                     break;
                                 }
 
@@ -169,14 +170,6 @@ namespace Messenger.Models
                             else if (Msg.RequestType == "Chat")
                             {
                                 Message = Msg;
-                                // Process the data sent by the client.
-                                // data = data.ToUpper();
-
-                                // byte[] msg = System.Text.Encoding.ASCII.GetBytes(data);
-
-                                // Send back a response.
-                                // stream.Write(msg, 0, msg.Length);
-                                // Console.WriteLine("Sent: {0}", data);
                             }
                         }
                     }
@@ -222,7 +215,7 @@ namespace Messenger.Models
                     // connected to the same address as specified by the server, port
                     // combination.
                     Int32 port = Port;
-                    TcpClient client = new TcpClient(IP, port);
+                    client = new TcpClient(IP, port);
 
                     // Translate the passed message into ASCII and store it as a Byte array.
                     Byte[] data = System.Text.Encoding.ASCII.GetBytes(message);
@@ -242,7 +235,6 @@ namespace Messenger.Models
                     // Buffer to store the response bytes.
                     data = new Byte[256];
 
-                    // String to store the response ASCII representation.
                     String responseData = String.Empty;
 
                     // Read the first batch of the TcpServer response bytes.
@@ -250,24 +242,29 @@ namespace Messenger.Models
                     responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
 
                     Message ResponseMsg = JsonConvert.DeserializeObject<Message>(responseData);
-                    if(ResponseMsg.RequestType == "RequestAccepted")
+
+                    if(ResponseMsg.RequestType == "RequestDenied")
                     {
                         // Feedback here
-                        ResponseToRequest = true;
-                        Listen();
+                        ResponseToRequest = false;
+                        
+                        // Close everything.
+                        stream.Close();
+                        client.Close();
                     }
                     else
                     {
                         // Feedback here
-                        ResponseToRequest = false;
+                        ResponseToRequest = true;
+                        do
+                        {
+                            // Read the batch of the TcpServer response bytes.
+                            bytes = stream.Read(data, 0, data.Length);
+                            responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
+                            ResponseMsg = JsonConvert.DeserializeObject<Message>(responseData);
+                            Message = ResponseMsg;
+                        } while (ResponseMsg.RequestType == "Chat");
                     }
-
-                    stream.Close();
-                    client.Close();
-                    
-                    //Console.WriteLine("Received: {0}", responseData);
-
-                    // Close everything.
                 }
                 catch (SocketException e)
                 {
@@ -293,12 +290,9 @@ namespace Messenger.Models
             {
                 Message Msg = new Message("Chat", DisplayName, new DateTime(), message);
                 message = JsonConvert.SerializeObject(Msg);
-                // Create a TcpClient.
-                // Note, for this client to work you need to have a TcpServer
-                // connected to the same address as specified by the server, port
-                // combination.
-                Int32 port = Port;
-                TcpClient client = new TcpClient(IP, port);
+
+                //Int32 port = Port;
+                //TcpClient client = new TcpClient(IP, port);
 
                 // Translate the passed message into ASCII and store it as a Byte array.
                 Byte[] data = System.Text.Encoding.ASCII.GetBytes(message);
@@ -307,10 +301,12 @@ namespace Messenger.Models
 
                 // Send the message to the connected TcpServer.
                 stream.Write(data, 0, data.Length);
+                Msg.Sender = "Me";
+                Message = Msg;
 
                 // Close everything.
-                stream.Close();
-                client.Close();
+                //stream.Close();
+                //client.Close();
             }
             catch (ArgumentNullException e)
             {

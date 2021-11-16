@@ -23,14 +23,15 @@ namespace Messenger.Views
         public ChatView()
         {
             InitializeComponent();
-
-            /*
-            TextBlock TestTextBlock = new TextBlock();
-            TestTextBlock.Text = "Hello, World!";
-            
-            ChatStackPanel.Children.Add(TestTextBlock);*/
-
-
         }
+        private void EmptyText(object sender, EventArgs e)
+        {
+            InputField.Text = "";
+        }
+        private void FillText(object sender, EventArgs e)
+        {
+            InputField.Text = "Type something...";
+        }
+
     }
 }
