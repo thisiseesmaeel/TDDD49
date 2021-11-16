@@ -18,6 +18,7 @@ namespace Messenger.Models
         {
             _port = 14000;
             _iP = "127.0.0.1";
+            _displayName = "Hadi";
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -119,7 +120,7 @@ namespace Messenger.Models
                     // Enter the listening loop.
                     while (true)
                     {
-                        Console.Write("Waiting for a connection... ");
+                        Console.Write(DisplayName.ToString() + " waiting for a connection... ");
 
                         // Perform a blocking call to accept requests.
                         // You could also use server.AcceptSocket() here.
@@ -234,7 +235,7 @@ namespace Messenger.Models
                     // Send the message to the connected TcpServer.
                     stream.Write(data, 0, data.Length);
 
-                    Console.WriteLine("Sent: {0}", message);
+                    //Console.WriteLine("Sent: {0}", message);
 
                     // Receive the TcpServer.response.
 
@@ -255,17 +256,18 @@ namespace Messenger.Models
                         ResponseToRequest = true;
                         Listen();
                     }
-                    else if(ResponseMsg.RequestType == "RequestDenied")
+                    else
                     {
                         // Feedback here
                         ResponseToRequest = false;
                     }
 
+                    stream.Close();
+                    client.Close();
+                    
                     //Console.WriteLine("Received: {0}", responseData);
 
                     // Close everything.
-                    stream.Close();
-                    client.Close();
                 }
                 catch (SocketException e)
                 {
@@ -282,14 +284,14 @@ namespace Messenger.Models
             Console.WriteLine("\n Press Enter to continue...");
             Console.Read();
 
-            Task.Factory.StartNew(action);
+           Task.Factory.StartNew(action);
         }
 
         public void Chat(string message)
         {
             try
             {
-                Message Msg = new Message("Chat", "Jack", new DateTime(), message);
+                Message Msg = new Message("Chat", DisplayName, new DateTime(), message);
                 message = JsonConvert.SerializeObject(Msg);
                 // Create a TcpClient.
                 // Note, for this client to work you need to have a TcpServer

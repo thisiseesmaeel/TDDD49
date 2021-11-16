@@ -22,6 +22,7 @@
                     <DataTemplate>
                         <StackPanel VerticalAlignment="Top"
                                     FlowDirection="LeftToRight">
+                            <TextBlock Text="{Binding Path=Sender}"/>
                             <TextBlock Text="{Binding Path=MessageText}"/>
                            
                         </StackPanel>
