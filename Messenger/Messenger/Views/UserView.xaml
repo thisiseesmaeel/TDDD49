@@ -26,54 +26,54 @@
                    Grid.ColumnSpan="2"
                    FontSize="35"
                    FontWeight="Bold"
-                   HorizontalAlignment="Center" Width="152"/>
+                   HorizontalAlignment="Center" Width="152" Margin="0"/>
 
         <TextBlock Text="Enter your name"
                    Grid.Row="1" Grid.Column="0"
-                   FontSize="28"/>
+                   FontSize="28" Margin="0"/>
 
         <TextBox   x:Name="variable"
                    Text="{Binding Path=DisplayName}"
                    Grid.Row="1" Grid.Column="1"
-                   FontSize="28" />
+                   FontSize="28" Margin="0" />
 
         <TextBlock Text="Enter IP"
                    Grid.Row="2" Grid.Column="0"
-                   FontSize="28"/>
+                   FontSize="28" Margin="0"/>
 
         <TextBox   x:Name="variable1"
                    Grid.Row="2" Grid.Column="1"
                    Text="{Binding Path=IP}"
-                   FontSize="28"/>
+                   FontSize="28" Margin="0"/>
 
         <TextBlock Text="Enter Port"
                    Grid.Row="3" Grid.Column="0"
-                   FontSize="28"
+                   FontSize="28" Margin="0"
                    />
         <TextBox   x:Name="variable2"
                    Grid.Row="3" Grid.Column="2"
                    Text="{Binding Path=Port}"
-                   FontSize="28" />
+                   FontSize="28" Margin="0" />
 
         <TextBlock Text="HardCoded"
                    Grid.Row="4" Grid.Column="0"
                    FontSize="15"
                    HorizontalAlignment="Center"
-                   Grid.ColumnSpan="2" />
+                   Grid.ColumnSpan="2" Margin="0" />
 
         <Button    x:Name="ListenBtn"
                    Content="Listen!"
                    FontSize="15"
                    FontWeight="Bold"
                    Grid.Row="5" Grid.Column="0"
-                   Command="{Binding Path=ListenCommand}"
+                   Command="{Binding Path=ListenCommand}" Margin="0"
                 />
         <Button    x:Name="ConnectBtn"
                    Content="Connect!"
                    FontSize="15"
                    FontWeight="Bold"
                    Grid.Row="5" Grid.Column="1"
-                   Command="{Binding Path=ConnectCommand}"
+                   Command="{Binding Path=ConnectCommand}" Margin="0"
                 />
     </Grid>
 

@@ -36,6 +36,7 @@ namespace Messenger.ViewModels
             set { UserModel.Port = value; OnPropertyChanged("Port"); }
         }
 
+        /*
         private string _nextPage;
 
         public string NextPage
@@ -43,7 +44,7 @@ namespace Messenger.ViewModels
             get { return _nextPage; }
             set { _nextPage = value; OnPropertyChanged("NextPage"); }
         }
-
+        */
 
         public UserViewModel(User UserModel)
         {
@@ -93,9 +94,9 @@ namespace Messenger.ViewModels
             MessageBoxButton button = MessageBoxButton.YesNo;
             MessageBoxImage icon = MessageBoxImage.Question;
 
-            // Display message box and save the result
+            //display message box and save the result
             MessageBoxResult result = MessageBox.Show(messageBoxText, caption, button, icon);
-
+            
             // Process message box results
             switch (result)
             {
@@ -111,7 +112,7 @@ namespace Messenger.ViewModels
                     UserModel.AcceptRequest = false;
                     break;
             }
-
+            
         }
 
         private void ShowSocketExceptionMessageBox()

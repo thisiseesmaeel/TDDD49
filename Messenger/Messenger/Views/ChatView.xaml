@@ -33,11 +33,12 @@
             </ItemsControl>
         </Border>
         <Button
-                Content="Logout"
+                Content="Back"
                 Width="100"
                 Height="50"
                 Margin="0,0,0,400"
-                Grid.Row="0" Grid.Column="1" Background="{x:Null}"/>
+                Grid.Row="0" Grid.Column="1" Background="{x:Null}"
+                Command="{Binding Path=BackToMainCommand}"/>
 
         <Border CornerRadius="3" BorderBrush="Gray"
         BorderThickness="2"

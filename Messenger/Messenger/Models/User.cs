@@ -304,9 +304,8 @@ namespace Messenger.Models
                 Msg.Sender = "Me";
                 Message = Msg;
 
-                // Close everything.
+                // Close stream
                 //stream.Close();
-                //client.Close();
             }
             catch (ArgumentNullException e)
             {

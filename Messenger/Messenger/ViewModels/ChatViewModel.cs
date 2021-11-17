@@ -23,12 +23,15 @@ namespace Messenger.ViewModels
         public ChatViewModel(User UM)
         {
             _chatCommand = new ChatCommand(this);
+            _backToMainCommand = new BackToMainCommand(this);
             UserModel = UM;
             UserModel.PropertyChanged += myModel_PropertyChanged;
             Chatlog = new ObservableCollection<Message>();
             Chatlog.CollectionChanged += Chatlog_CollectionChanged;
         }
 
+        public delegate void SwitchToMainHandler();
+        public event SwitchToMainHandler UserIntendsToGoBack;
         private void myModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
@@ -36,7 +39,6 @@ namespace Messenger.ViewModels
                 case "Message":
                     App.Current.Dispatcher.Invoke(() => { Chatlog.Add(UserModel.Message); });
                     //Dispatcher.CurrentDispatcher.Invoke(() => { Chatlog.Add(UserModel.Message); });
-
                     break;
                 default:
                     break;
@@ -70,7 +72,18 @@ namespace Messenger.ViewModels
             }
         }
 
+        public void RaiseBackEvent()
+        {
+            UserIntendsToGoBack();
+        }
+
+
+        #region commands
         private ChatCommand _chatCommand;
         public ICommand ChatCommand => _chatCommand;
+
+        private BackToMainCommand _backToMainCommand;
+        public ICommand BackToMainCommand => _backToMainCommand;
+        #endregion
     }
 }
