@@ -167,6 +167,8 @@ namespace Messenger.Models
                             }
                             else if(Msg.RequestType == "EndConnection")
                             {
+                                Msg = new Message("Chat", DisplayName, new DateTime(), " Left the room.");
+                                Message = Msg;
                                 _connectionEnded = true;
                                 client.Close();
                                 client = null;
@@ -247,21 +249,29 @@ namespace Messenger.Models
                         bytes = stream.Read(data, 0, data.Length);
                         responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
                         ResponseMsg = JsonConvert.DeserializeObject<Message>(responseData);
+                        _connectionEnded = false;
 
-                        while (!_connectionEnded && ResponseMsg.RequestType == "Chat")
+                        while (! _connectionEnded && ResponseMsg != null)
                         {
-                            Message = ResponseMsg;
-                            bytes = stream.Read(data, 0, data.Length);
-                            responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
-                            ResponseMsg = JsonConvert.DeserializeObject<Message>(responseData);
+                            if(ResponseMsg.RequestType == "Chat")
+                            {
+                                Message = ResponseMsg;
+                                bytes = stream.Read(data, 0, data.Length);
+                                responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
+                                ResponseMsg = JsonConvert.DeserializeObject<Message>(responseData);
+
+                            }
+                            else if(ResponseMsg.RequestType == "EndConnection")
+                            {
+                                _connectionEnded = true;
+                                client.Close();
+                                client = null;
+                                ResponseMsg = new Message("Chat", DisplayName, new DateTime(), " Left the room.");
+                                Message = ResponseMsg;
+                                Console.WriteLine("Done connecting...");
+                            }
                         }
 
-                        if(!_connectionEnded && ResponseMsg.RequestType == "EndConnection")
-                        {
-                            client.Close();
-                            client = null;
-                            Console.WriteLine("Done connecting...");
-                        }
                     }
                 }
                 #region exception

@@ -16,6 +16,9 @@ namespace Messenger.ViewModels
         public delegate void SwitchToMainHandler();
         public event SwitchToChatHandler UserIntendsToChatEvent;
         public event SwitchToMainHandler UserIntendsToGoBack;
+
+     
+
         public void RaiseUserIntendsToChatEvent()
         {
             UserIntendsToChatEvent();

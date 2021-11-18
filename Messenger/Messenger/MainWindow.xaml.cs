@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Messenger.ViewModels;
 
+
 namespace Messenger
 {
     /// <summary>
@@ -25,8 +26,9 @@ namespace Messenger
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainViewModel();
-            //Closing += test()
+            MainViewModel context = new MainViewModel();
+            DataContext = context;
+            Closing += context.OnWindowClosing;
         }
 
     }

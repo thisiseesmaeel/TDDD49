@@ -25,6 +25,7 @@ namespace Messenger.ViewModels
             UserModel.PropertyChanged += myModel_PropertyChanged;
             Chatlog = new ObservableCollection<Message>();
             Chatlog.CollectionChanged += Chatlog_CollectionChanged;
+           
         }
 
         //public delegate void SwitchToMainHandler();

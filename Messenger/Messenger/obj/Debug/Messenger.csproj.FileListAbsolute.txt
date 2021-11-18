@@ -85,4 +85,3 @@ C:\Users\hadia\Skrivbord\TDDD49\Messenger\Messenger\obj\Debug\Messenger.csproj.C
 C:\Users\hadia\Skrivbord\TDDD49\Messenger\Messenger\obj\Debug\Messenger.csproj.CopyComplete
 C:\Users\hadia\Skrivbord\TDDD49\Messenger\Messenger\obj\Debug\Messenger.exe
 C:\Users\hadia\Skrivbord\TDDD49\Messenger\Messenger\obj\Debug\Messenger.pdb
-C:\Users\hadia\Skrivbord\TDDD49\Messenger\Messenger\obj\Debug\Messenger.csprojAssemblyReference.cache

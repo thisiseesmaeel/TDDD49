@@ -24,6 +24,11 @@ namespace Messenger.ViewModels
             get { return _selectedViewModel; }
             set { _selectedViewModel = value; OnPropertyChanged("SelectedViewModel"); }
         }
+        public void OnWindowClosing(object sender, CancelEventArgs e)
+        {
+            BaseViewModel.UserModel.TearDownConnection();
+        }
+
 
         private void OnPropertyChanged(String PropertyName)
         {
