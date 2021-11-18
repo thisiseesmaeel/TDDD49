@@ -26,7 +26,7 @@ namespace Messenger.ViewModels.Commands
 
         public void Execute(object parameter)
         {
-            _userViewModel.UserModel.Connect();
+            BaseViewModel.UserModel.Connect();
         }
         #endregion
     }

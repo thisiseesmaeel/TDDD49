@@ -18,11 +18,10 @@ namespace Messenger.ViewModels
     {
         public ObservableCollection<Message> Chatlog { set; get; }
 
-        public ChatViewModel(User UM)
+        public ChatViewModel()
         {
             _chatCommand = new ChatCommand(this);
             _backToMainCommand = new BackToMainCommand(this);
-            UserModel = UM;
             UserModel.PropertyChanged += myModel_PropertyChanged;
             Chatlog = new ObservableCollection<Message>();
             Chatlog.CollectionChanged += Chatlog_CollectionChanged;
@@ -72,8 +71,7 @@ namespace Messenger.ViewModels
         public void RaiseBackEvent()
         {
             UserModel.TearDownConnection();
-            Raise2();
-            //UserIntendsToGoBack();
+            RaiseUserIntendsToGoBack();
         }
 
 

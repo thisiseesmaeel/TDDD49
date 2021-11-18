@@ -30,18 +30,19 @@ namespace Messenger.ViewModels
             set { UserModel.Port = value; OnPropertyChanged("Port"); }
         }
 
-        public UserViewModel(User UM)
+        public UserViewModel()
         {
             _listenCommand = new ListenCommand(this);
             _connectCommand = new ConnectCommand(this);
-            UserModel = UM;
-            UserModel.PropertyChanged += myModel_PropertyChanged;
-            DisplayName = UserModel.DisplayName;           
+            if(BaseViewModel.UserModel == null)
+            {
+                BaseViewModel.UserModel = new User();
+                BaseViewModel.UserModel.PropertyChanged += myModel_PropertyChanged;
+            }
+            DisplayName = UserModel.DisplayName;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        //public delegate void SwitchToChatHandler();
-        //public event SwitchToChatHandler UserIntendsToChatEvent;
 
         private void OnPropertyChanged(String PropertyName)
         {
@@ -87,7 +88,7 @@ namespace Messenger.ViewModels
                 case MessageBoxResult.Yes:
                     UserModel.AcceptRequest = true;
                     // should navigate to a new ViewModel
-                    Raise();
+                    RaiseUserIntendsToChatEvent();
                     break;
                 case MessageBoxResult.No:
                     UserModel.AcceptRequest = false;
@@ -130,7 +131,7 @@ namespace Messenger.ViewModels
                 case MessageBoxResult.OK:
                     // should navigate to a new ViewModel
                     if (Accepted)
-                        Raise();
+                        RaiseUserIntendsToChatEvent();
                         //UserIntendsToChatEvent();
                     break;
                 default:

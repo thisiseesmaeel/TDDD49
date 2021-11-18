@@ -135,7 +135,7 @@ namespace Messenger.Models
                         int i;
 
                         // Loop to receive all the data sent by the client.
-                        while ((i = stream.Read(bytes, 0, bytes.Length)) != 0 || !_connectionEnded)
+                        while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
                         {
                             data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
 
@@ -169,6 +169,9 @@ namespace Messenger.Models
                             else if(Msg.RequestType == "EndConnection")
                             {
                                 _connectionEnded = true;
+                                client.Close();
+                                client = null;
+                                break;
                             }
                         }
                     }

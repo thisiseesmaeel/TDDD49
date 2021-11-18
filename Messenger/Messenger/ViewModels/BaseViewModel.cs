@@ -10,18 +10,18 @@ namespace Messenger.ViewModels
 {
     public class BaseViewModel
     {
-        public User UserModel { set; get; }
+        public static User UserModel { set; get; }
 
         public delegate void SwitchToChatHandler();
         public delegate void SwitchToMainHandler();
         public event SwitchToChatHandler UserIntendsToChatEvent;
         public event SwitchToMainHandler UserIntendsToGoBack;
-        public void Raise()
+        public void RaiseUserIntendsToChatEvent()
         {
             UserIntendsToChatEvent();
         }
 
-        public void Raise2()
+        public void RaiseUserIntendsToGoBack()
         {
             UserIntendsToGoBack();
         }

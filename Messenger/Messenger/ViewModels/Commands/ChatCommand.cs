@@ -23,7 +23,7 @@ namespace Messenger.ViewModels.Commands
 
         public void Execute(object parameter)
         {
-            _chatViewModel.UserModel.Chat(parameter.ToString());
+            BaseViewModel.UserModel.Chat(parameter.ToString());
         }
     }
 }

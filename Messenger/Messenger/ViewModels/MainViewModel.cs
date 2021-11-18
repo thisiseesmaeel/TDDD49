@@ -12,7 +12,7 @@ namespace Messenger.ViewModels
     {
         public MainViewModel()
         {
-            SelectedViewModel = new UserViewModel(new User());
+            SelectedViewModel = new UserViewModel();
             SelectedViewModel.UserIntendsToChatEvent += new UserViewModel.SwitchToChatHandler(GoToChatEventHandler);
         }
 
@@ -33,13 +33,13 @@ namespace Messenger.ViewModels
 
         private void GoToChatEventHandler()
         {
-            SelectedViewModel = new ChatViewModel(new User());
+            SelectedViewModel = new ChatViewModel();
             SelectedViewModel.UserIntendsToGoBack += new ChatViewModel.SwitchToMainHandler(GoToMainEventHandler);
         }
 
         private void GoToMainEventHandler()
         {
-            SelectedViewModel = new UserViewModel(new User());
+            SelectedViewModel = new UserViewModel();
             SelectedViewModel.UserIntendsToChatEvent += new UserViewModel.SwitchToChatHandler(GoToChatEventHandler);
         }
     }
