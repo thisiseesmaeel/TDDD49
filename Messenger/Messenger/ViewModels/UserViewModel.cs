@@ -13,12 +13,6 @@ namespace Messenger.ViewModels
 {
     public class UserViewModel: BaseViewModel, INotifyPropertyChanged
     {
-        private User _userModel;
-        public User UserModel
-        {
-            get { return _userModel; }
-            set { _userModel = value; }
-        }
         public String DisplayName
         {
             get { return UserModel.DisplayName; }
@@ -36,28 +30,18 @@ namespace Messenger.ViewModels
             set { UserModel.Port = value; OnPropertyChanged("Port"); }
         }
 
-        /*
-        private string _nextPage;
-
-        public string NextPage
-        {
-            get { return _nextPage; }
-            set { _nextPage = value; OnPropertyChanged("NextPage"); }
-        }
-        */
-
-        public UserViewModel(User UserModel)
+        public UserViewModel(User UM)
         {
             _listenCommand = new ListenCommand(this);
             _connectCommand = new ConnectCommand(this);
-            _userModel = UserModel;
-            _userModel.PropertyChanged += myModel_PropertyChanged;
-            DisplayName = UserModel.DisplayName;
+            UserModel = UM;
+            UserModel.PropertyChanged += myModel_PropertyChanged;
+            DisplayName = UserModel.DisplayName;           
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        public delegate void SwitchToChatHandler();
-        public event SwitchToChatHandler UserIntendsToChatEvent;
+        //public delegate void SwitchToChatHandler();
+        //public event SwitchToChatHandler UserIntendsToChatEvent;
 
         private void OnPropertyChanged(String PropertyName)
         {
@@ -89,7 +73,7 @@ namespace Messenger.ViewModels
         private void ShowInvitationMessageBox(string name = "Blabla")
         {
             // Configure the message box to be displayed
-            string messageBoxText = $"Do you want to chat with {name}?"; //Name of the person should be added as well later.
+            string messageBoxText = $"Dear {DisplayName} do you want to chat with {name}?"; //Name of the person should be added as well later.
             string caption = "Permission";
             MessageBoxButton button = MessageBoxButton.YesNo;
             MessageBoxImage icon = MessageBoxImage.Question;
@@ -103,7 +87,7 @@ namespace Messenger.ViewModels
                 case MessageBoxResult.Yes:
                     UserModel.AcceptRequest = true;
                     // should navigate to a new ViewModel
-                    UserIntendsToChatEvent();
+                    Raise();
                     break;
                 case MessageBoxResult.No:
                     UserModel.AcceptRequest = false;
@@ -145,8 +129,9 @@ namespace Messenger.ViewModels
             {
                 case MessageBoxResult.OK:
                     // should navigate to a new ViewModel
-                    if(Accepted)
-                        UserIntendsToChatEvent();
+                    if (Accepted)
+                        Raise();
+                        //UserIntendsToChatEvent();
                     break;
                 default:
                     break;

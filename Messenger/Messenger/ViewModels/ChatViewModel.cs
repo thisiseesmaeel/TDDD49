@@ -18,8 +18,6 @@ namespace Messenger.ViewModels
     {
         public ObservableCollection<Message> Chatlog { set; get; }
 
-        public User UserModel { set; get; }
-
         public ChatViewModel(User UM)
         {
             _chatCommand = new ChatCommand(this);
@@ -30,15 +28,14 @@ namespace Messenger.ViewModels
             Chatlog.CollectionChanged += Chatlog_CollectionChanged;
         }
 
-        public delegate void SwitchToMainHandler();
-        public event SwitchToMainHandler UserIntendsToGoBack;
+        //public delegate void SwitchToMainHandler();
+        //public event SwitchToMainHandler UserIntendsToGoBack;
         private void myModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {
                 case "Message":
                     App.Current.Dispatcher.Invoke(() => { Chatlog.Add(UserModel.Message); });
-                    //Dispatcher.CurrentDispatcher.Invoke(() => { Chatlog.Add(UserModel.Message); });
                     break;
                 default:
                     break;
@@ -74,7 +71,9 @@ namespace Messenger.ViewModels
 
         public void RaiseBackEvent()
         {
-            UserIntendsToGoBack();
+            UserModel.TearDownConnection();
+            Raise2();
+            //UserIntendsToGoBack();
         }
 
 

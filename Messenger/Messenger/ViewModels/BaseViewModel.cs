@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Messenger.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -8,6 +9,21 @@ using System.Threading.Tasks;
 namespace Messenger.ViewModels
 {
     public class BaseViewModel
-    { 
+    {
+        public User UserModel { set; get; }
+
+        public delegate void SwitchToChatHandler();
+        public delegate void SwitchToMainHandler();
+        public event SwitchToChatHandler UserIntendsToChatEvent;
+        public event SwitchToMainHandler UserIntendsToGoBack;
+        public void Raise()
+        {
+            UserIntendsToChatEvent();
+        }
+
+        public void Raise2()
+        {
+            UserIntendsToGoBack();
+        }
     }
 }

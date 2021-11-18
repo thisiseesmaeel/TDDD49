@@ -12,14 +12,15 @@ namespace Messenger.Models
 {
     public class User : INotifyPropertyChanged
     {
-        Random rd = new Random();
         TcpClient client;
-
+        bool _connectionEnded;
         public User()
         {
+            Console.WriteLine("New User created!");
             _port = 14000;
             _iP = "127.0.0.1";
             _displayName = "Hadi";
+            _connectionEnded = false;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -85,7 +86,12 @@ namespace Messenger.Models
         public bool ShowSocketExceptionMessageBox
         {
             get { return _showSocketExceptionMessageBox; }
-            set { _showSocketExceptionMessageBox = value; OnPropertyChanged("ShowSocketExceptionMessageBox"); }
+            set 
+            { 
+                _showSocketExceptionMessageBox = value;
+                Console.WriteLine("Showing SocketException MessageBox...");
+                OnPropertyChanged("ShowSocketExceptionMessageBox"); 
+            }
         }
 
         private bool _responseToRequest;
@@ -102,55 +108,47 @@ namespace Messenger.Models
             Action action = () =>
             {
                 TcpListener server = null;
+                Console.WriteLine("Listen clicked...");
                 try
                 {
-                    // Set the TcpListener on port 13000.
                     Int32 port = Port;
                     IPAddress localAddr = IPAddress.Parse(IP);
 
-                    // TcpListener server = new TcpListener(port);
                     server = new TcpListener(localAddr, port);
 
-                    // Start listening for client requests.
                     server.Start();
 
-                    // Buffer for reading data
                     Byte[] bytes = new Byte[256];
                     String data = null;
 
+                    _connectionEnded = false;
                     // Enter the listening loop.
-                    while (true)
+                    while (!_connectionEnded)
                     {
                         Console.Write(DisplayName.ToString() + " waiting for a connection... ");
 
-                        // Perform a blocking call to accept requests.
-                        // You could also use server.AcceptSocket() here.
                         client = server.AcceptTcpClient();
                         Console.WriteLine("Connected!");
 
                         data = null;
-
-                        // Get a stream object for reading and writing
                         NetworkStream stream = client.GetStream();
-
                         int i;
 
                         // Loop to receive all the data sent by the client.
-                        while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
+                        while ((i = stream.Read(bytes, 0, bytes.Length)) != 0 || !_connectionEnded)
                         {
-                            // Translate data bytes to a ASCII string.
                             data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
-                            // Console.WriteLine("Received: {0}", data);
 
                             Message Msg = JsonConvert.DeserializeObject<Message>(data);
                             if (Msg.RequestType == "Establish")
                             {
                                
                                 ShowInvitationMessageBox = true;
+                                
                                 if (AcceptRequest)
                                 {                                    
                                     // Send back a response.
-                                    Message response = new Message("RequestAccepted", DisplayName, new DateTime(), " ");
+                                    Message response = new Message("RequestAccepted", DisplayName, new DateTime(), "");
                                     byte[] msg = System.Text.Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(response));
                                     stream.Write(msg, 0, msg.Length);
                                 }
@@ -160,9 +158,6 @@ namespace Messenger.Models
                                     Message response = new Message("RequestDenied", DisplayName, new DateTime(), " ");
                                     byte[] msg = System.Text.Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(response));
                                     stream.Write(msg, 0, msg.Length);
-
-                                    // Shutdown and end connection
-                                    //client.Close();
                                     break;
                                 }
 
@@ -171,9 +166,14 @@ namespace Messenger.Models
                             {
                                 Message = Msg;
                             }
+                            else if(Msg.RequestType == "EndConnection")
+                            {
+                                _connectionEnded = true;
+                            }
                         }
                     }
                 }
+                #region Exception
                 catch (SocketException e)
                 {
                     Console.WriteLine("SocketException: {0}", e);
@@ -188,14 +188,12 @@ namespace Messenger.Models
                 }
 
                 finally
-                {                    
+                {
                     // Stop listening for new clients.
+                    Console.WriteLine("Done listening ...");
                     server.Stop();
                 }
-     
-
-                Console.WriteLine("\nHit enter to continue...");
-                Console.Read();
+                #endregion
             };
 
             Task.Factory.StartNew(action);
@@ -203,41 +201,28 @@ namespace Messenger.Models
 
         public void Connect()
         {
-            Message Msg = new Message("Establish", "Jack", new DateTime(), "");
+            Message Msg = new Message("Establish", DisplayName, new DateTime(), "");
             string message = JsonConvert.SerializeObject(Msg);
             
             Action action = () =>
             {
+                Console.WriteLine("Connect clicked...");
                 try
                 {
-                    // Create a TcpClient.
-                    // Note, for this client to work you need to have a TcpServer
-                    // connected to the same address as specified by the server, port
-                    // combination.
                     Int32 port = Port;
                     client = new TcpClient(IP, port);
 
-                    // Translate the passed message into ASCII and store it as a Byte array.
                     Byte[] data = System.Text.Encoding.ASCII.GetBytes(message);
-
-                    // Get a client stream for reading and writing.
-                    //  Stream stream = client.GetStream();
 
                     NetworkStream stream = client.GetStream();
 
-                    // Send the message to the connected TcpServer.
+                    Console.WriteLine("Writing to stream...");
                     stream.Write(data, 0, data.Length);
 
-                    //Console.WriteLine("Sent: {0}", message);
-
-                    // Receive the TcpServer.response.
-
-                    // Buffer to store the response bytes.
                     data = new Byte[256];
 
                     String responseData = String.Empty;
 
-                    // Read the first batch of the TcpServer response bytes.
                     Int32 bytes = stream.Read(data, 0, data.Length);
                     responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
 
@@ -256,16 +241,28 @@ namespace Messenger.Models
                     {
                         // Feedback here
                         ResponseToRequest = true;
-                        do
+                        // Read the batch of the TcpServer response bytes.
+                        bytes = stream.Read(data, 0, data.Length);
+                        responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
+                        ResponseMsg = JsonConvert.DeserializeObject<Message>(responseData);
+
+                        while (ResponseMsg.RequestType == "Chat")
                         {
-                            // Read the batch of the TcpServer response bytes.
+                            Message = ResponseMsg;
                             bytes = stream.Read(data, 0, data.Length);
                             responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
                             ResponseMsg = JsonConvert.DeserializeObject<Message>(responseData);
-                            Message = ResponseMsg;
-                        } while (ResponseMsg.RequestType == "Chat");
+                        }
+
+                        if(ResponseMsg.RequestType == "EndConnection")
+                        {
+                            client.Close();
+                            client = null;
+                            Console.WriteLine("Done connecting...");
+                        }
                     }
                 }
+                #region exception
                 catch (SocketException e)
                 {
                     Console.WriteLine("SocketException: {0}", e);
@@ -276,10 +273,8 @@ namespace Messenger.Models
                 {
                     Console.WriteLine("ArgumentNullException: {0}", e);
                 }
+                #endregion
             };
-
-            Console.WriteLine("\n Press Enter to continue...");
-            Console.Read();
 
            Task.Factory.StartNew(action);
         }
@@ -291,22 +286,15 @@ namespace Messenger.Models
                 Message Msg = new Message("Chat", DisplayName, new DateTime(), message);
                 message = JsonConvert.SerializeObject(Msg);
 
-                //Int32 port = Port;
-                //TcpClient client = new TcpClient(IP, port);
-
-                // Translate the passed message into ASCII and store it as a Byte array.
                 Byte[] data = System.Text.Encoding.ASCII.GetBytes(message);
 
                 NetworkStream stream = client.GetStream();
 
-                // Send the message to the connected TcpServer.
                 stream.Write(data, 0, data.Length);
                 Msg.Sender = "Me";
                 Message = Msg;
-
-                // Close stream
-                //stream.Close();
             }
+            #region Exception
             catch (ArgumentNullException e)
             {
                 Console.WriteLine("ArgumentNullException: {0}", e);
@@ -315,6 +303,34 @@ namespace Messenger.Models
             {
                 Console.WriteLine("SocketException: {0}", e);
             }
+            #endregion
+        }
+
+        public void TearDownConnection()
+        {
+            try
+            {
+                Message Msg = new Message("EndConnection", DisplayName, new DateTime(), "");
+
+                Byte[] data = System.Text.Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(Msg));
+
+                if(client != null)
+                {
+                    NetworkStream stream = client.GetStream();
+                    stream.Write(data, 0, data.Length);
+                }
+                _connectionEnded = true;
+            }
+            #region Exception
+            catch (ArgumentNullException e)
+            {
+                Console.WriteLine("ArgumentNullException: {0}", e);
+            }
+            catch (SocketException e)
+            {
+                Console.WriteLine("SocketException: {0}", e);
+            }
+            #endregion
         }
     }
 }

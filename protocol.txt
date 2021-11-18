@@ -1,29 +1,39 @@
+// För att etablera kopplingen
 {
-	"requesttype":	"Establish"
-	"sender": "Blabla"
-	"date": "2018-10-22T08:31:00.000Z"
-	"message": ""
+	"RequestType":	"Establish"
+	"Sender": "Blabla"
+	"Date": "2018-10-22T08:31:00.000Z"
+	"MessageText": ""
+}
+
+// Respons till etablering (Acceptera/Neka)från andra användare
+{
+	"RequestType":	"RequestAccepted"
+	"Sender": "Blabla"
+	"Date": "2018-10-22T08:31:00.000Z"
+	"MessageText": ""
 }
 
 {
-	"requesttype":	"RequestAccepted"
-	"sender": "Blabla"
-	"date": "2018-10-22T08:31:00.000Z"
-	"message": ""
+	"RequestType":	"RequestDenied"
+	"Sender": "Blabla"
+	"Date": "2018-10-22T08:31:00.000Z"
+	"MessageText": ""
 }
-
+// För att chatta
 {
-	"requesttype":	"RequestDenied"
-	"sender": "Blabla"
-	"date": "2018-10-22T08:31:00.000Z"
-	"message": ""
+	"RequestType":	"Chat"
+	"Sender": "Blabla"
+	"Date": "2018-10-22T08:31:00.000Z"
+	"MessageText": "Hello my friend!"
 }
 
+// För att skicka avbryt signal (när användaren clickar på Back-knapp)
 {
-	"type":	"Chat"
-	"sender": "Blabla"
-	"date": "2018-10-22T08:31:00.000Z"
-	"message": "Hello my friend!"
+	"RequestType":	"EndConnection"
+	"Sender": "Blabla"
+	"Date": "2018-10-22T08:31:00.000Z"
+	"MessageText": ""
 }
 
-127.0.0.1
+
