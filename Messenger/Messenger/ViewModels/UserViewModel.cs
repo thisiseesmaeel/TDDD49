@@ -13,6 +13,17 @@ namespace Messenger.ViewModels
 {
     public class UserViewModel: BaseViewModel, INotifyPropertyChanged
     {
+        public UserViewModel()
+        {
+            _listenCommand = new ListenCommand(this);
+            _connectCommand = new ConnectCommand(this);
+            if(BaseViewModel.UserModel == null)
+            {
+                BaseViewModel.UserModel = new User();
+                BaseViewModel.UserModel.PropertyChanged += myModel_PropertyChanged;
+            }
+            DisplayName = UserModel.DisplayName;
+        }
         public String DisplayName
         {
             get { return UserModel.DisplayName; }
@@ -30,17 +41,6 @@ namespace Messenger.ViewModels
             set { UserModel.Port = value; OnPropertyChanged("Port"); }
         }
 
-        public UserViewModel()
-        {
-            _listenCommand = new ListenCommand(this);
-            _connectCommand = new ConnectCommand(this);
-            if(BaseViewModel.UserModel == null)
-            {
-                BaseViewModel.UserModel = new User();
-                BaseViewModel.UserModel.PropertyChanged += myModel_PropertyChanged;
-            }
-            DisplayName = UserModel.DisplayName;
-        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

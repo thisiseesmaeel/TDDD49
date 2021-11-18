@@ -25,12 +25,7 @@ namespace Messenger.Models
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void OnPropertyChanged(string PropertyName ="")
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(PropertyName));
-        }
-
+        #region Fields
         private String _displayName;
 
         public String DisplayName
@@ -54,8 +49,6 @@ namespace Messenger.Models
             set { _port = value; OnPropertyChanged("Port"); }
         }
 
-     
-        
         private Message _message;
 
         public Message Message
@@ -101,7 +94,13 @@ namespace Messenger.Models
             get { return _responseToRequest; }
             set { _responseToRequest = value; OnPropertyChanged("ResponseToRequest"); }
         }
+        #endregion
 
+        private void OnPropertyChanged(string PropertyName ="")
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(PropertyName));
+        }
 
         public void Listen()
         {
@@ -249,7 +248,7 @@ namespace Messenger.Models
                         responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
                         ResponseMsg = JsonConvert.DeserializeObject<Message>(responseData);
 
-                        while (ResponseMsg.RequestType == "Chat")
+                        while (!_connectionEnded && ResponseMsg.RequestType == "Chat")
                         {
                             Message = ResponseMsg;
                             bytes = stream.Read(data, 0, data.Length);
@@ -257,7 +256,7 @@ namespace Messenger.Models
                             ResponseMsg = JsonConvert.DeserializeObject<Message>(responseData);
                         }
 
-                        if(ResponseMsg.RequestType == "EndConnection")
+                        if(!_connectionEnded && ResponseMsg.RequestType == "EndConnection")
                         {
                             client.Close();
                             client = null;
