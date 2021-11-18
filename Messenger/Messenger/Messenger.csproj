@@ -122,5 +122,17 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\blue-wood-texture.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\SpeedLight.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Abstract triangle.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Views\blue-wood-texture.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

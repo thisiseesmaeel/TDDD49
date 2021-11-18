@@ -167,7 +167,7 @@ namespace Messenger.Models
                             }
                             else if(Msg.RequestType == "EndConnection")
                             {
-                                Msg = new Message("Chat", DisplayName, new DateTime(), " Left the room.");
+                                Msg = new Message("Chat", Msg.Sender, new DateTime(), "Left the room.");
                                 Message = Msg;
                                 _connectionEnded = true;
                                 client.Close();
@@ -266,7 +266,7 @@ namespace Messenger.Models
                                 _connectionEnded = true;
                                 client.Close();
                                 client = null;
-                                ResponseMsg = new Message("Chat", DisplayName, new DateTime(), " Left the room.");
+                                ResponseMsg = new Message("Chat", ResponseMsg.Sender, new DateTime(), "Left the room.");
                                 Message = ResponseMsg;
                                 Console.WriteLine("Done connecting...");
                             }

@@ -8,6 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("viewmodels/commands/newfile1.txt")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("views/blue-wood-texture.jpg")]
 
 
