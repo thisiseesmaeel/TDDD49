@@ -66,7 +66,7 @@
     <Compile Include="ViewModels\Commands\ConnectCommand.cs" />
     <Compile Include="ViewModels\Commands\ListenCommand.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="ViewModels\UserViewModel.cs" />
+    <Compile Include="ViewModels\StartViewModel.cs" />
     <Compile Include="Views\ChatView.xaml.cs">
       <DependentUpon>ChatView.xaml</DependentUpon>
     </Compile>

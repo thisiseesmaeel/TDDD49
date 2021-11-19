@@ -6,7 +6,7 @@
              xmlns:viewmodels="clr-namespace:Messenger.ViewModels"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <DataTemplate DataType="{x:Type viewmodels:UserViewModel}">
+        <DataTemplate DataType="{x:Type viewmodels:StartViewModel}">
             <views:UserView/>
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewmodels:ChatViewModel}">

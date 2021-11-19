@@ -9,10 +9,10 @@ namespace Messenger.ViewModels.Commands
 {
     public class ConnectCommand : ICommand
     {
-        private UserViewModel _userViewModel;
+        private StartViewModel _userViewModel;
 
         #region ICommand Members  
-        public ConnectCommand(UserViewModel UserVM)
+        public ConnectCommand(StartViewModel UserVM)
         {
             _userViewModel = UserVM;
         }

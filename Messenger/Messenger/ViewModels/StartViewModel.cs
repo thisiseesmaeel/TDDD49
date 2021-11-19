@@ -11,9 +11,9 @@ using System.Windows;
 
 namespace Messenger.ViewModels
 {
-    public class UserViewModel: BaseViewModel, INotifyPropertyChanged
+    public class StartViewModel: BaseViewModel, INotifyPropertyChanged
     {
-        public UserViewModel()
+        public StartViewModel()
         {
             _listenCommand = new ListenCommand(this);
             _connectCommand = new ConnectCommand(this);

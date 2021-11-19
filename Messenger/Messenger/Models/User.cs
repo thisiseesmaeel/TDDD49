@@ -157,6 +157,7 @@ namespace Messenger.Models
                                     Message response = new Message("RequestDenied", DisplayName, new DateTime(), " ");
                                     byte[] msg = System.Text.Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(response));
                                     stream.Write(msg, 0, msg.Length);
+                                    client.Close();
                                     break;
                                 }
 
@@ -171,7 +172,6 @@ namespace Messenger.Models
                                 Message = Msg;
                                 _connectionEnded = true;
                                 client.Close();
-                                client = null;
                                 break;
                             }
                         }
@@ -190,7 +190,10 @@ namespace Messenger.Models
                 {
                     Console.WriteLine("Insert a valid IP: {0}", e);
                 }
-
+                catch(System.IO.IOException e)
+                {
+                    Console.WriteLine("Connection ended: {0}", e);
+                }
                 finally
                 {
                     // Stop listening for new clients.
@@ -220,58 +223,64 @@ namespace Messenger.Models
 
                     NetworkStream stream = client.GetStream();
 
-                    Console.WriteLine("Writing to stream...");
                     stream.Write(data, 0, data.Length);
 
                     data = new Byte[256];
 
-                    String responseData = String.Empty;
+                    String ResponseData = String.Empty;
 
-                    Int32 bytes = stream.Read(data, 0, data.Length);
-                    responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
+                    Message ResponseObj = null;
 
-                    Message ResponseMsg = JsonConvert.DeserializeObject<Message>(responseData);
+                    Int32 bytes;
+                    _connectionEnded = false;
 
-                    if(ResponseMsg.RequestType == "RequestDenied")
+                    while(!_connectionEnded)
                     {
-                        // Feedback here
-                        ResponseToRequest = false;
-                        
-                        // Close everything.
-                        stream.Close();
-                        client.Close();
-                    }
-                    else
-                    {
-                        // Feedback here
-                        ResponseToRequest = true;
-                        // Read the batch of the TcpServer response bytes.
                         bytes = stream.Read(data, 0, data.Length);
-                        responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
-                        ResponseMsg = JsonConvert.DeserializeObject<Message>(responseData);
-                        _connectionEnded = false;
+                        ResponseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
+                        ResponseObj = JsonConvert.DeserializeObject<Message>(ResponseData);
 
-                        while (! _connectionEnded && ResponseMsg != null)
+                        if (ResponseObj.RequestType == "RequestDenied")
                         {
-                            if(ResponseMsg.RequestType == "Chat")
-                            {
-                                Message = ResponseMsg;
-                                bytes = stream.Read(data, 0, data.Length);
-                                responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
-                                ResponseMsg = JsonConvert.DeserializeObject<Message>(responseData);
-
-                            }
-                            else if(ResponseMsg.RequestType == "EndConnection")
-                            {
-                                _connectionEnded = true;
-                                client.Close();
-                                client = null;
-                                ResponseMsg = new Message("Chat", ResponseMsg.Sender, new DateTime(), "Left the room.");
-                                Message = ResponseMsg;
-                                Console.WriteLine("Done connecting...");
-                            }
+                            // Feedback here
+                            ResponseToRequest = false;
+                            // Close everything.
+                            stream.Close();
+                            client.Close();
+                            _connectionEnded = true;
                         }
+                        else
+                        {
+                            // Feedback here
+                            ResponseToRequest = true;
 
+                            _connectionEnded = false;
+
+                            // Read the batch of the TcpServer response bytes.
+                            while ((bytes = stream.Read(data, 0, data.Length)) != 0)
+                            {
+                                ResponseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
+                                ResponseObj = JsonConvert.DeserializeObject<Message>(ResponseData);
+                                if (ResponseObj.RequestType == "Chat")
+                                {
+                                    Message = ResponseObj;
+                                    bytes = stream.Read(data, 0, data.Length);
+                                    ResponseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
+                                    ResponseObj = JsonConvert.DeserializeObject<Message>(ResponseData);
+
+                                }
+                                else if (ResponseObj.RequestType == "EndConnection")
+                                {
+                                    _connectionEnded = true;
+                                    client.Close();
+                                    ResponseObj = new Message("Chat", ResponseObj.Sender, new DateTime(), "Left the room.");
+                                    Message = ResponseObj;
+                                    Console.WriteLine("Done connecting...");
+                                    break;
+                                }
+
+                            }
+                        }       
                     }
                 }
                 #region exception
@@ -284,6 +293,10 @@ namespace Messenger.Models
                 catch (ArgumentNullException e)
                 {
                     Console.WriteLine("ArgumentNullException: {0}", e);
+                }
+                catch (System.IO.IOException e)
+                {
+                    Console.WriteLine("Connection ended: {0}", e);
                 }
                 #endregion
             };
@@ -322,14 +335,13 @@ namespace Messenger.Models
         {
             try
             {
-                Message Msg = new Message("EndConnection", DisplayName, new DateTime(), "");
-
-                Byte[] data = System.Text.Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(Msg));
-
-                if(client != null)
+                if(client !=null && client.Connected)
                 {
+                    Message Msg = new Message("EndConnection", DisplayName, new DateTime(), "");
+                    Byte[] data = System.Text.Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(Msg));
                     NetworkStream stream = client.GetStream();
                     stream.Write(data, 0, data.Length);
+                    client.Close();
                 }
                 _connectionEnded = true;
             }

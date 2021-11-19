@@ -12,8 +12,8 @@ namespace Messenger.ViewModels
     {
         public MainViewModel()
         {
-            SelectedViewModel = new UserViewModel();
-            SelectedViewModel.UserIntendsToChatEvent += new UserViewModel.SwitchToChatHandler(GoToChatEventHandler);
+            SelectedViewModel = new StartViewModel();
+            SelectedViewModel.UserIntendsToChatEvent += new StartViewModel.SwitchToChatHandler(GoToChatEventHandler);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -44,8 +44,8 @@ namespace Messenger.ViewModels
 
         private void GoToMainEventHandler()
         {
-            SelectedViewModel = new UserViewModel();
-            SelectedViewModel.UserIntendsToChatEvent += new UserViewModel.SwitchToChatHandler(GoToChatEventHandler);
+            SelectedViewModel = new StartViewModel();
+            SelectedViewModel.UserIntendsToChatEvent += new StartViewModel.SwitchToChatHandler(GoToChatEventHandler);
         }
     }
 }

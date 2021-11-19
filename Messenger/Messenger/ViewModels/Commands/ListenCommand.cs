@@ -10,9 +10,9 @@ namespace Messenger.ViewModels.Commands
 {
     public class ListenCommand : ICommand
     {
-        private UserViewModel _userViewModel;
+        private StartViewModel _userViewModel;
 
-        public ListenCommand(UserViewModel UserVM)
+        public ListenCommand(StartViewModel UserVM)
         {
             _userViewModel = UserVM;
         }
