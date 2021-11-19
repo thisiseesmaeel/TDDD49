@@ -20,8 +20,8 @@ namespace Messenger.ViewModels
 
         public ChatViewModel()
         {
-            _chatCommand = new ChatCommand(this);
-            _backToMainCommand = new BackToMainCommand(this);
+            _chatCommand = new ChatCommand();
+            _backToMainCommand = new BackToStartCommand(this);
             UserModel.PropertyChanged += myModel_PropertyChanged;
             Chatlog = new ObservableCollection<Message>();
             Chatlog.CollectionChanged += Chatlog_CollectionChanged;
@@ -80,7 +80,7 @@ namespace Messenger.ViewModels
         private ChatCommand _chatCommand;
         public ICommand ChatCommand => _chatCommand;
 
-        private BackToMainCommand _backToMainCommand;
+        private BackToStartCommand _backToMainCommand;
         public ICommand BackToMainCommand => _backToMainCommand;
         #endregion
     }

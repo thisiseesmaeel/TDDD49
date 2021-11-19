@@ -61,7 +61,7 @@
     <Compile Include="Models\Message.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\ChatViewModel.cs" />
-    <Compile Include="ViewModels\Commands\BackToMainCommand.cs" />
+    <Compile Include="ViewModels\Commands\BackToStartCommand.cs" />
     <Compile Include="ViewModels\Commands\ChatCommand.cs" />
     <Compile Include="ViewModels\Commands\ConnectCommand.cs" />
     <Compile Include="ViewModels\Commands\ListenCommand.cs" />
