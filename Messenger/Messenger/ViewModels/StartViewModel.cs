@@ -8,6 +8,7 @@ using Messenger.Models;
 using System.Windows.Input;
 using Messenger.ViewModels.Commands;
 using System.Windows;
+using System.Collections.ObjectModel;
 
 namespace Messenger.ViewModels
 {
@@ -23,7 +24,21 @@ namespace Messenger.ViewModels
                 BaseViewModel.UserModel.PropertyChanged += myModel_PropertyChanged;
             }
             DisplayName = UserModel.DisplayName;
+            ChatHistory = new ObservableCollection<ChatHistory>();
+            ChatHistory.Add(new ChatHistory("Hadi"));
+            ChatHistory.Add(new ChatHistory("Ismail"));
         }
+
+        #region Fields
+        public delegate void SwitchToChatHandler();
+        public event SwitchToChatHandler UserIntendsToChatEvent;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        //Test
+        public ObservableCollection<ChatHistory> ChatHistory { set; get; }
+        
+        //
         public String DisplayName
         {
             get { return UserModel.DisplayName; }
@@ -40,16 +55,12 @@ namespace Messenger.ViewModels
             get { return UserModel.Port; }
             set { UserModel.Port = value; OnPropertyChanged("Port"); }
         }
-
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
         private void OnPropertyChanged(String PropertyName)
         {
             if(this.PropertyChanged != null)
                 this.PropertyChanged(this, new PropertyChangedEventArgs(PropertyName));
         }
-
+        #endregion
 
         private void myModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
@@ -88,7 +99,7 @@ namespace Messenger.ViewModels
                 case MessageBoxResult.Yes:
                     UserModel.AcceptRequest = true;
                     // should navigate to a new ViewModel
-                    RaiseUserIntendsToChatEvent();
+                    UserIntendsToChatEvent();
                     break;
                 case MessageBoxResult.No:
                     UserModel.AcceptRequest = false;
@@ -131,8 +142,7 @@ namespace Messenger.ViewModels
                 case MessageBoxResult.OK:
                     // should navigate to a new ViewModel
                     if (Accepted)
-                        RaiseUserIntendsToChatEvent();
-                        //UserIntendsToChatEvent();
+                        UserIntendsToChatEvent();
                     break;
                 default:
                     break;
@@ -145,8 +155,10 @@ namespace Messenger.ViewModels
         public ICommand ListenCommand => _listenCommand;
 
         private ConnectCommand _connectCommand;
-
         public ICommand ConnectCommand => _connectCommand;
+
+        public ShowHistoryCommand _showHistoryCommand;
+        public ICommand ShowHistoryCommand => _showHistoryCommand;
 
         #endregion
 

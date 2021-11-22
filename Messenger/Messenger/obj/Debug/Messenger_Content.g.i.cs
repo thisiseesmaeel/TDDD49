@@ -8,6 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("views/blue-wood-texture.jpg")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("models/newfile1.txt")]
 
 

@@ -28,8 +28,8 @@ namespace Messenger.ViewModels
            
         }
 
-        //public delegate void SwitchToMainHandler();
-        //public event SwitchToMainHandler UserIntendsToGoBack;
+        public delegate void SwitchToMainHandler();
+        public event SwitchToMainHandler UserIntendsToGoBackEvent;
         private void myModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
@@ -72,7 +72,7 @@ namespace Messenger.ViewModels
         public void RaiseBackEvent()
         {
             UserModel.TearDownConnection();
-            RaiseUserIntendsToGoBack();
+            UserIntendsToGoBackEvent();
         }
 
 

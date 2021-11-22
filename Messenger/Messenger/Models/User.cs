@@ -12,8 +12,6 @@ namespace Messenger.Models
 {
     public class User : INotifyPropertyChanged
     {
-        TcpClient client;
-        bool _connectionEnded;
         public User()
         {
             _port = 14000;
@@ -22,9 +20,13 @@ namespace Messenger.Models
             _connectionEnded = false;
         }
 
+        #region Fields
         public event PropertyChangedEventHandler PropertyChanged;
 
-        #region Fields
+        TcpClient client;
+
+        bool _connectionEnded;
+
         private String _displayName;
 
         public String DisplayName

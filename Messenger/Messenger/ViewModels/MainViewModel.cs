@@ -12,8 +12,9 @@ namespace Messenger.ViewModels
     {
         public MainViewModel()
         {
-            SelectedViewModel = new StartViewModel();
-            SelectedViewModel.UserIntendsToChatEvent += new StartViewModel.SwitchToChatHandler(GoToChatEventHandler);
+            var startViewModel = new StartViewModel();
+            startViewModel.UserIntendsToChatEvent += new StartViewModel.SwitchToChatHandler(GoToChatEventHandler);
+            SelectedViewModel = startViewModel;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -24,6 +25,7 @@ namespace Messenger.ViewModels
             get { return _selectedViewModel; }
             set { _selectedViewModel = value; OnPropertyChanged("SelectedViewModel"); }
         }
+        
         public void OnWindowClosing(object sender, CancelEventArgs e)
         {
             BaseViewModel.UserModel.TearDownConnection();
@@ -38,14 +40,16 @@ namespace Messenger.ViewModels
 
         private void GoToChatEventHandler()
         {
-            SelectedViewModel = new ChatViewModel();
-            SelectedViewModel.UserIntendsToGoBack += new ChatViewModel.SwitchToMainHandler(GoToMainEventHandler);
+            var chatViewModel = new ChatViewModel();
+            chatViewModel.UserIntendsToGoBackEvent += new ChatViewModel.SwitchToMainHandler(GoToMainEventHandler);
+            SelectedViewModel = chatViewModel;
         }
 
         private void GoToMainEventHandler()
         {
-            SelectedViewModel = new StartViewModel();
-            SelectedViewModel.UserIntendsToChatEvent += new StartViewModel.SwitchToChatHandler(GoToChatEventHandler);
+            var startViewModel = new StartViewModel();
+            startViewModel.UserIntendsToChatEvent += new StartViewModel.SwitchToChatHandler(GoToChatEventHandler);
+            SelectedViewModel = startViewModel;
         }
     }
 }

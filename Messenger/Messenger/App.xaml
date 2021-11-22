@@ -7,10 +7,13 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <DataTemplate DataType="{x:Type viewmodels:StartViewModel}">
-            <views:UserView/>
+            <views:StartView/>
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewmodels:ChatViewModel}">
             <views:ChatView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:ChatHistoryViewModel}">
+            <views:ChatHistoryView/>
         </DataTemplate>
     </Application.Resources>
 </Application>
