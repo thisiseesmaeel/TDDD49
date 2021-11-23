@@ -8,12 +8,10 @@ namespace Messenger.Models
 {
     public class ChatHistory
     {
-        public ChatHistory(string name)
+        public ChatHistory()
         {
-            Name = name;
+            Name = "";
             ChatLog = new List<Chat>();
-            ChatLog.Add(new Chat("Hello!", "Me"));
-            ChatLog.Add(new Chat("Hi there!", "Ismail"));
         }
         public string Name { get; set; }
         public List<Chat> ChatLog { get; set; }

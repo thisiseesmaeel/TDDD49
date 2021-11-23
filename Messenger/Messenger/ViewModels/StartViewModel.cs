@@ -18,28 +18,29 @@ namespace Messenger.ViewModels
         {
             _listenCommand = new ListenCommand(this);
             _connectCommand = new ConnectCommand(this);
-            _showHistoryCommand = new ShowHistoryCommand();
+            _showHistoryCommand = new ShowHistoryCommand(this);
             if(BaseViewModel.UserModel == null)
             {
                 BaseViewModel.UserModel = new User();
                 BaseViewModel.UserModel.PropertyChanged += myModel_PropertyChanged;
             }
             DisplayName = UserModel.DisplayName;
-            ChatHistory = new ObservableCollection<ChatHistory>();
-            ChatHistory.Add(new ChatHistory("Hadi"));
-            ChatHistory.Add(new ChatHistory("Ismail"));
         }
 
         #region Fields
         public delegate void SwitchToChatHandler();
         public event SwitchToChatHandler UserIntendsToChatEvent;
 
+        public delegate void SwitchToHistoryHandler(ChatHistory chatHistoryObj);
+        public event SwitchToHistoryHandler UserIntendsToViewHistoryEvent;
+
         public event PropertyChangedEventHandler PropertyChanged;
 
-        //Test
-        public ObservableCollection<ChatHistory> ChatHistory { set; get; }
         
-        //
+        public Dictionary<string, ChatHistory> ChatHistory 
+        { get { return UserModel.ChatHistoryDictionary; } }
+        
+        
         public String DisplayName
         {
             get { return UserModel.DisplayName; }
@@ -150,7 +151,10 @@ namespace Messenger.ViewModels
             }
         }
 
-
+        public void RaiseUserIntendsToViewHistoryEvent(ChatHistory chatHistoryObj)
+        {
+            UserIntendsToViewHistoryEvent(chatHistoryObj);
+        }
         #region Commands
         private ListenCommand _listenCommand;
         public ICommand ListenCommand => _listenCommand;

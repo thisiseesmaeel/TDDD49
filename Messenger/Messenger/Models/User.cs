@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Net.Sockets;
 using System.Net;
 using Newtonsoft.Json;
+using System.Collections.ObjectModel;
 
 namespace Messenger.Models
 {
@@ -18,6 +19,19 @@ namespace Messenger.Models
             _iP = "127.0.0.1";
             _displayName = "Hadi";
             _connectionEnded = false;
+            ChatHistoryDictionary = new Dictionary<string, ChatHistory>();
+            ChatHistory temp = new ChatHistory();
+            temp.ChatLog.Add(new Chat("Hello", "Me"));
+            temp.ChatLog.Add(new Chat("Hi", "Hadi"));
+
+            ChatHistoryDictionary.Add("Hadi", temp);
+
+            temp = new ChatHistory();
+            temp.ChatLog.Add(new Chat("Hello", "Ahmed"));
+            temp.ChatLog.Add(new Chat("Hi Ahmed how is it going?", "Me"));
+
+            ChatHistoryDictionary.Add("Ahmed", temp);
+            Console.WriteLine(ChatHistoryDictionary["Hadi"]);
         }
 
         #region Fields
@@ -57,7 +71,6 @@ namespace Messenger.Models
             get { return _message; }
             set { _message = value; OnPropertyChanged("Message"); }
         }
-        
 
         private bool _showInvitationMessageBox;
 
@@ -83,7 +96,6 @@ namespace Messenger.Models
             set 
             { 
                 _showSocketExceptionMessageBox = value;
-                Console.WriteLine("Showing SocketException MessageBox...");
                 OnPropertyChanged("ShowSocketExceptionMessageBox"); 
             }
         }
@@ -95,6 +107,7 @@ namespace Messenger.Models
             get { return _responseToRequest; }
             set { _responseToRequest = value; OnPropertyChanged("ResponseToRequest"); }
         }
+        public Dictionary <string, ChatHistory> ChatHistoryDictionary { set; get; }
         #endregion
 
         private void OnPropertyChanged(string PropertyName ="")

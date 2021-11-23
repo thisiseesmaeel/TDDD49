@@ -14,6 +14,7 @@ namespace Messenger.ViewModels
         {
             var startViewModel = new StartViewModel();
             startViewModel.UserIntendsToChatEvent += new StartViewModel.SwitchToChatHandler(GoToChatEventHandler);
+            startViewModel.UserIntendsToViewHistoryEvent += new StartViewModel.SwitchToHistoryHandler(GoToHistoryEventHandler);
             SelectedViewModel = startViewModel;
         }
 
@@ -50,6 +51,12 @@ namespace Messenger.ViewModels
             var startViewModel = new StartViewModel();
             startViewModel.UserIntendsToChatEvent += new StartViewModel.SwitchToChatHandler(GoToChatEventHandler);
             SelectedViewModel = startViewModel;
+        }
+
+        private void GoToHistoryEventHandler(ChatHistory chatHistoryObj)
+        {
+            var ChatHistoryViewModel = new ChatHistoryViewModel(chatHistoryObj);
+            SelectedViewModel = ChatHistoryViewModel;
         }
     }
 }

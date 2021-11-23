@@ -51,7 +51,8 @@
         <Border CornerRadius="3" BorderBrush="Gray" BorderThickness="2" DockPanel.Dock="Top"
                 Grid.Column="1" Grid.Row="2" Grid.RowSpan="5"
                 Background="White">
-            <ItemsControl x:Name="MyHistoryItems" ItemsSource="{Binding Path=ChatHistory}">
+            <ItemsControl x:Name="MyHistoryItems" ItemsSource="{Binding Path=ChatHistory}"
+                          >
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <StackPanel VerticalAlignment="Top"
@@ -67,7 +68,7 @@
                                 </Grid.RowDefinitions>
 
                                 <TextBlock 
-                                            Text="{Binding Path=Name}"
+                                            Text="{Binding Path=Key}"
                                             Grid.Column="0" Grid.Row="0"
                                             Height="30"
                                             VerticalAlignment="Center"
@@ -78,7 +79,7 @@
                                          Height="30"
                                          VerticalAlignment="Center"
                                          Command="{Binding ElementName=MyHistoryItems, Path=DataContext.ShowHistoryCommand}"
-                                         CommandParameter="{Binding Name}"
+                                         CommandParameter="{Binding Key}"
                                          />
                             </Grid>
                         </StackPanel>

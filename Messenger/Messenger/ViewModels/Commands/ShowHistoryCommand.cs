@@ -9,8 +9,12 @@ namespace Messenger.ViewModels.Commands
 {
     public class ShowHistoryCommand : ICommand
     {
+        private StartViewModel _startViewModel;
+        public ShowHistoryCommand(StartViewModel startViewModel)
+        {
+            _startViewModel = startViewModel;
+        }
         public event EventHandler CanExecuteChanged;
-
         public bool CanExecute(object parameter)
         {
             return true;
@@ -20,6 +24,7 @@ namespace Messenger.ViewModels.Commands
         {
             Console.WriteLine("This is the params that being sent: " + parameter.ToString());
             // Implement show history in usermodel to refer to
+            _startViewModel.RaiseUserIntendsToViewHistoryEvent(BaseViewModel.UserModel.ChatHistoryDictionary[parameter.ToString()]);
         }
     }
 }
