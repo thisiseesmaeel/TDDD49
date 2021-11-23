@@ -44,13 +44,14 @@
             <Button  Grid.Column="1" Grid.Row="1"
                          Content="Search"
                          Height="30"
-                         VerticalAlignment="Center"/>
+                         VerticalAlignment="Center"
+                         />
         </Grid>
 
         <Border CornerRadius="3" BorderBrush="Gray" BorderThickness="2" DockPanel.Dock="Top"
                 Grid.Column="1" Grid.Row="2" Grid.RowSpan="5"
                 Background="White">
-            <ItemsControl ItemsSource="{Binding Path=ChatHistory}">
+            <ItemsControl x:Name="MyHistoryItems" ItemsSource="{Binding Path=ChatHistory}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <StackPanel VerticalAlignment="Top"
@@ -75,7 +76,10 @@
                                 <Button  Grid.Column="1" Grid.Row="1"
                                          Content="Show"
                                          Height="30"
-                                         VerticalAlignment="Center"/>
+                                         VerticalAlignment="Center"
+                                         Command="{Binding ElementName=MyHistoryItems, Path=DataContext.ShowHistoryCommand}"
+                                         CommandParameter="{Binding Name}"
+                                         />
                             </Grid>
                         </StackPanel>
                     </DataTemplate>

@@ -18,6 +18,7 @@ namespace Messenger.ViewModels
         {
             _listenCommand = new ListenCommand(this);
             _connectCommand = new ConnectCommand(this);
+            _showHistoryCommand = new ShowHistoryCommand();
             if(BaseViewModel.UserModel == null)
             {
                 BaseViewModel.UserModel = new User();
