@@ -8,6 +8,7 @@ using System.Net.Sockets;
 using System.Net;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
+using System.IO;
 
 namespace Messenger.Models
 {
@@ -33,9 +34,14 @@ namespace Messenger.Models
 
             ChatHistoryDictionary.Add("Ahmed", temp);
             Console.WriteLine(ChatHistoryDictionary["Hadi"]);
+
+            SaveHistory();
+            LoadHistory();
         }
 
         #region Fields
+        private const string DatabasePath = @"C:\Users\hadan326\Desktop\tddd49\database.json";
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         TcpClient client;
@@ -356,5 +362,43 @@ namespace Messenger.Models
             }
             #endregion
         }
+
+
+        public void SaveHistory()
+        {
+            TextWriter writer = null;
+            try
+            {
+                var contentsToWriteToFile = Newtonsoft.Json.JsonConvert.SerializeObject(ChatHistoryDictionary);
+                writer = new StreamWriter(DatabasePath, false);
+                writer.Write(contentsToWriteToFile);
+            }
+            finally
+            {
+                if (writer != null)
+                    writer.Close();
+            }
+
+        }
+
+        public void LoadHistory()
+        {
+            TextReader reader = null;
+            try
+            {
+                reader = new StreamReader(DatabasePath);
+                var fileContents = reader.ReadToEnd();
+                Dictionary<string, ChatHistory> temp = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, ChatHistory>>(fileContents);
+                Console.WriteLine("Testtttt");
+                
+            }
+            finally
+            {
+                if (reader != null)
+                    reader.Close();
+            }
+        }
     }
+
+
 }

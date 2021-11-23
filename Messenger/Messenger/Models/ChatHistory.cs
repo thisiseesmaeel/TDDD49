@@ -10,10 +10,9 @@ namespace Messenger.Models
     {
         public ChatHistory()
         {
-            Name = "";
+            
             ChatLog = new List<Chat>();
         }
-        public string Name { get; set; }
         public List<Chat> ChatLog { get; set; }
 
     }
