@@ -14,6 +14,7 @@ namespace Messenger.ViewModels
     {
         public ChatHistoryViewModel(ChatHistory chatHistory)
         {
+            _backToStartCommand = new BackToStartCommand(this);
             ChatHistory = chatHistory;
         }
         private ChatHistory _chatHistory;
@@ -34,8 +35,8 @@ namespace Messenger.ViewModels
 
 
         #region Commands
-        private BackToStartCommand _backToMainCommand;
-        public ICommand BackToMainCommand => _backToMainCommand;
+        private BackToStartCommand _backToStartCommand;
+        public ICommand BackToStartCommand => _backToStartCommand;
 
         #endregion
 

@@ -15,6 +15,7 @@ namespace Messenger.Models
     {
         public User()
         {
+            
             _port = 14000;
             _iP = "127.0.0.1";
             _displayName = "Hadi";

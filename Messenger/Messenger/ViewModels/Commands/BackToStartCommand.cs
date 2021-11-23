@@ -9,12 +9,12 @@ namespace Messenger.ViewModels.Commands
 {
     public class BackToStartCommand : ICommand
     {
-        private ChatViewModel _chatViewModel;
+        BaseViewModel _baseViewModel;
         public event EventHandler CanExecuteChanged;
 
-        public BackToStartCommand(ChatViewModel chatViewModel)
+        public BackToStartCommand(BaseViewModel baseViewModel)
         {
-            _chatViewModel = chatViewModel;
+            _baseViewModel = baseViewModel;
         }
         public bool CanExecute(object parameter)
         {
@@ -23,7 +23,8 @@ namespace Messenger.ViewModels.Commands
 
         public void Execute(object parameter)
         {
-            _chatViewModel.RaiseBackEvent();
+            _baseViewModel.RaiseUserIntendsToGoBackEvent();
+                
         }
     }
 }

@@ -47,7 +47,7 @@
                 FontWeight="Bold"
                 VerticalAlignment="Top"
                 Grid.Row="1" Grid.Column="2"
-                Command="{Binding Path=BackToMainCommand}"/>
+                Command="{Binding Path=BackToStartCommand}"/>
 
         <Border CornerRadius="3" BorderBrush="Gray"
                 BorderThickness="2"

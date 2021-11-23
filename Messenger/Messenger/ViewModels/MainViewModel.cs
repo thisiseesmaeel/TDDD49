@@ -42,21 +42,23 @@ namespace Messenger.ViewModels
         private void GoToChatEventHandler()
         {
             var chatViewModel = new ChatViewModel();
-            chatViewModel.UserIntendsToGoBackEvent += new ChatViewModel.SwitchToMainHandler(GoToMainEventHandler);
+            chatViewModel.UserIntendsToGoBackEvent += new SwitchToStartHandler(GoToStartEventHandler);
             SelectedViewModel = chatViewModel;
         }
 
-        private void GoToMainEventHandler()
+        private void GoToStartEventHandler()
         {
             var startViewModel = new StartViewModel();
             startViewModel.UserIntendsToChatEvent += new StartViewModel.SwitchToChatHandler(GoToChatEventHandler);
+            startViewModel.UserIntendsToViewHistoryEvent += new StartViewModel.SwitchToHistoryHandler(GoToHistoryEventHandler);
             SelectedViewModel = startViewModel;
         }
 
         private void GoToHistoryEventHandler(ChatHistory chatHistoryObj)
         {
-            var ChatHistoryViewModel = new ChatHistoryViewModel(chatHistoryObj);
-            SelectedViewModel = ChatHistoryViewModel;
+            var chatHistoryViewModel = new ChatHistoryViewModel(chatHistoryObj);
+            chatHistoryViewModel.UserIntendsToGoBackEvent += new SwitchToStartHandler(GoToStartEventHandler);
+            SelectedViewModel = chatHistoryViewModel;
         }
     }
 }

@@ -21,15 +21,15 @@ namespace Messenger.ViewModels
         public ChatViewModel()
         {
             _chatCommand = new ChatCommand();
-            _backToMainCommand = new BackToStartCommand(this);
+            _backToStartCommand = new BackToStartCommand(this);
             UserModel.PropertyChanged += myModel_PropertyChanged;
             Chatlog = new ObservableCollection<Message>();
             Chatlog.CollectionChanged += Chatlog_CollectionChanged;
            
         }
 
-        public delegate void SwitchToMainHandler();
-        public event SwitchToMainHandler UserIntendsToGoBackEvent;
+        //public delegate void SwitchToMainHandler();
+        //public event SwitchToMainHandler UserIntendsToGoBackEvent;
         private void myModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
@@ -69,19 +69,12 @@ namespace Messenger.ViewModels
             }
         }
 
-        public void RaiseBackEvent()
-        {
-            UserModel.TearDownConnection();
-            UserIntendsToGoBackEvent();
-        }
-
-
         #region commands
         private ChatCommand _chatCommand;
         public ICommand ChatCommand => _chatCommand;
 
-        private BackToStartCommand _backToMainCommand;
-        public ICommand BackToMainCommand => _backToMainCommand;
+        private BackToStartCommand _backToStartCommand;
+        public ICommand BackToStartCommand => _backToStartCommand;
         #endregion
     }
 }
