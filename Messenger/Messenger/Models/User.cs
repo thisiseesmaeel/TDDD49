@@ -25,21 +25,6 @@ namespace Messenger.Models
             Chatpartner = null;
             ChatHistoryDictionary = new Dictionary<string, ChatHistory>();
 
-          /*
-            ChatHistory temp = new ChatHistory();
-            
-            temp.ChatLog.Add(new Chat("Hello", "Me"));
-            temp.ChatLog.Add(new Chat("Hi", "Hadi"));
-
-            ChatHistoryDictionary.Add("Hadi", temp);
-
-            temp = new ChatHistory();
-            temp.ChatLog.Add(new Chat("Hello", "Ahmed"));
-            temp.ChatLog.Add(new Chat("Hi Ahmed how is it going?", "Me"));
-            
-            ChatHistoryDictionary.Add("Ahmed", temp);
-            */
-
         }
 
         #region Fields
