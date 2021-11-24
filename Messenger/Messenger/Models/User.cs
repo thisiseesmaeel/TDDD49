@@ -16,13 +16,18 @@ namespace Messenger.Models
     {
         public User()
         {
-            
+            DateTime date1 = DateTime.Now;
+            Console.WriteLine(date1.ToString("yyyy-mm-dd H:mm"));
             _port = 14000;
             _iP = "127.0.0.1";
-            _displayName = "Hadi";
+            _displayName = "Ismail";
             _connectionEnded = false;
+            Chatpartner = null;
             ChatHistoryDictionary = new Dictionary<string, ChatHistory>();
+
+          /*
             ChatHistory temp = new ChatHistory();
+            
             temp.ChatLog.Add(new Chat("Hello", "Me"));
             temp.ChatLog.Add(new Chat("Hi", "Hadi"));
 
@@ -31,22 +36,23 @@ namespace Messenger.Models
             temp = new ChatHistory();
             temp.ChatLog.Add(new Chat("Hello", "Ahmed"));
             temp.ChatLog.Add(new Chat("Hi Ahmed how is it going?", "Me"));
-
+            
             ChatHistoryDictionary.Add("Ahmed", temp);
-            Console.WriteLine(ChatHistoryDictionary["Hadi"]);
+            */
 
-            SaveHistory();
-            LoadHistory();
         }
 
         #region Fields
-        private const string DatabasePath = @"C:\Users\hadan326\Desktop\tddd49\database.json";
-
         public event PropertyChangedEventHandler PropertyChanged;
+
+        // Relative path in which database going to be created
+        private const string DatabasePath = @"..\..\..\..\database.json";
 
         TcpClient client;
 
         bool _connectionEnded;
+
+        public string Chatpartner { get; set; }
 
         private String _displayName;
 
@@ -162,11 +168,11 @@ namespace Messenger.Models
                             Message Msg = JsonConvert.DeserializeObject<Message>(data);
                             if (Msg.RequestType == "Establish")
                             {
-                               
+                                Chatpartner = Msg.Sender;
                                 ShowInvitationMessageBox = true;
                                 
                                 if (AcceptRequest)
-                                {                                    
+                                {
                                     // Send back a response.
                                     Message response = new Message("RequestAccepted", DisplayName, new DateTime(), "");
                                     byte[] msg = System.Text.Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(response));
@@ -174,6 +180,7 @@ namespace Messenger.Models
                                 }
                                 else
                                 {
+                                    Chatpartner = null;
                                     // Send back a response.
                                     Message response = new Message("RequestDenied", DisplayName, new DateTime(), " ");
                                     byte[] msg = System.Text.Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(response));
@@ -186,6 +193,10 @@ namespace Messenger.Models
                             else if (Msg.RequestType == "Chat")
                             {
                                 Message = Msg;
+                                Chat temp = new Chat(Msg.MessageText, Msg.Sender);
+                                if (!ChatHistoryDictionary.ContainsKey(Chatpartner))
+                                    ChatHistoryDictionary[Chatpartner] = new ChatHistory(DateTime.Now);
+                                ChatHistoryDictionary[Chatpartner].ChatLog.Add(temp);
                             }
                             else if(Msg.RequestType == "EndConnection")
                             {
@@ -253,6 +264,7 @@ namespace Messenger.Models
 
                     if (ResponseObj.RequestType == "RequestDenied")
                     {
+                        Chatpartner = null;
                         // Feedback here
                         ResponseToRequest = false;
                         // Close everything.
@@ -260,8 +272,9 @@ namespace Messenger.Models
                         client.Close();
                         _connectionEnded = true;
                     }
-                    else
+                    else // Request Accepted
                     {
+                        Chatpartner = ResponseObj.Sender;
                         // Feedback here
                         ResponseToRequest = true;
 
@@ -275,6 +288,11 @@ namespace Messenger.Models
                             if (ResponseObj.RequestType == "Chat")
                             {
                                 Message = ResponseObj;
+                                Chat temp = new Chat(ResponseObj.MessageText, ResponseObj.Sender);
+                                if (!ChatHistoryDictionary.ContainsKey(Chatpartner))
+                                    ChatHistoryDictionary[Chatpartner] = new ChatHistory(DateTime.Now);
+                                ChatHistoryDictionary[Chatpartner].ChatLog.Add(temp);
+
                             }
                             else if (ResponseObj.RequestType == "EndConnection")
                             {
@@ -323,6 +341,11 @@ namespace Messenger.Models
 
                 stream.Write(data, 0, data.Length);
                 Msg.Sender = "Me";
+
+                Chat temp = new Chat(Msg.MessageText, Msg.Sender);
+                if (!ChatHistoryDictionary.ContainsKey(Chatpartner))
+                    ChatHistoryDictionary[Chatpartner] = new ChatHistory(DateTime.Now);
+                ChatHistoryDictionary[Chatpartner].ChatLog.Add(temp);
                 Message = Msg;
             }
             #region Exception
@@ -347,8 +370,12 @@ namespace Messenger.Models
                     Byte[] data = System.Text.Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(Msg));
                     NetworkStream stream = client.GetStream();
                     stream.Write(data, 0, data.Length);
-                    client.Close();
+
+                    // Do we need this line?
+                    stream.Close();
+                    //client.Close();
                 }
+                SaveHistory();
                 _connectionEnded = true;
             }
             #region Exception
@@ -362,7 +389,6 @@ namespace Messenger.Models
             }
             #endregion
         }
-
 
         public void SaveHistory()
         {
@@ -388,9 +414,11 @@ namespace Messenger.Models
             {
                 reader = new StreamReader(DatabasePath);
                 var fileContents = reader.ReadToEnd();
-                Dictionary<string, ChatHistory> temp = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, ChatHistory>>(fileContents);
-                Console.WriteLine("Testtttt");
-                
+                ChatHistoryDictionary = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, ChatHistory>>(fileContents);
+            }
+            catch(System.IO.FileNotFoundException e)
+            {
+                Console.WriteLine("Database does not exist");
             }
             finally
             {

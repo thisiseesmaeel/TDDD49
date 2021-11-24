@@ -25,6 +25,7 @@ namespace Messenger.ViewModels
                 BaseViewModel.UserModel.PropertyChanged += myModel_PropertyChanged;
             }
             DisplayName = UserModel.DisplayName;
+            UserModel.LoadHistory();
         }
 
         #region Fields
@@ -84,10 +85,10 @@ namespace Messenger.ViewModels
 
         }
 
-        private void ShowInvitationMessageBox(string name = "Blabla")
+        private void ShowInvitationMessageBox()
         {
             // Configure the message box to be displayed
-            string messageBoxText = $"Dear {DisplayName} do you want to chat with {name}?"; //Name of the person should be added as well later.
+            string messageBoxText = $"Dear {DisplayName} do you want to chat with {UserModel.Chatpartner}?"; //Name of the person should be added as well later.
             string caption = "Permission";
             MessageBoxButton button = MessageBoxButton.YesNo;
             MessageBoxImage icon = MessageBoxImage.Question;

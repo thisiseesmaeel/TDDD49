@@ -1,0 +1,5 @@
+user 1 connects and leaves
+user 1 listens and leaves
+
+user 1 connects but user2 leaves
+user 1 listens but user 2 leaves

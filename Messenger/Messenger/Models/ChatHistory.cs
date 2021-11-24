@@ -8,12 +8,13 @@ namespace Messenger.Models
 {
     public class ChatHistory
     {
-        public ChatHistory()
+        public ChatHistory(DateTime date)
         {
-            
             ChatLog = new List<Chat>();
+            Date = date;
         }
         public List<Chat> ChatLog { get; set; }
+        public DateTime Date { get; set; }
 
     }
 }

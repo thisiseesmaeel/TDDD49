@@ -22,7 +22,6 @@ namespace Messenger.ViewModels.Commands
 
         public void Execute(object parameter)
         {
-            Console.WriteLine("This is the params that being sent: " + parameter.ToString());
             // Implement show history in usermodel to refer to
             _startViewModel.RaiseUserIntendsToViewHistoryEvent(BaseViewModel.UserModel.ChatHistoryDictionary[parameter.ToString()]);
         }
