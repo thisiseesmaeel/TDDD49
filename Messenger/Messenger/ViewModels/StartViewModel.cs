@@ -36,11 +36,6 @@ namespace Messenger.ViewModels
         public event SwitchToHistoryHandler UserIntendsToViewHistoryEvent;
 
         public event PropertyChangedEventHandler PropertyChanged;
-
-        
-        public Dictionary<string, ChatHistory> ChatHistory 
-        { get { return UserModel.ChatHistoryDictionary; } }
-        
         
         public String DisplayName
         {
@@ -58,12 +53,16 @@ namespace Messenger.ViewModels
             get { return UserModel.Port; }
             set { UserModel.Port = value; OnPropertyChanged("Port"); }
         }
+
+        public List<ChatHistory> ChatHistory
+        { get { return UserModel.ChatHistoryList; } }
+        #endregion
+
         private void OnPropertyChanged(String PropertyName)
         {
             if(this.PropertyChanged != null)
                 this.PropertyChanged(this, new PropertyChangedEventArgs(PropertyName));
         }
-        #endregion
 
         private void myModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {

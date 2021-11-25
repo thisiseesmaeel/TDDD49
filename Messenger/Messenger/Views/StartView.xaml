@@ -68,7 +68,7 @@
                                 </Grid.RowDefinitions>
 
                                 <TextBlock 
-                                            Text="{Binding Path=Key}"
+                                            Text="{Binding Path=ChatPartnerName}"
                                             Grid.Column="0" Grid.Row="0"
                                             Height="30"
                                             VerticalAlignment="Center"
@@ -79,7 +79,7 @@
                                          Height="30"
                                          VerticalAlignment="Center"
                                          Command="{Binding ElementName=MyHistoryItems, Path=DataContext.ShowHistoryCommand}"
-                                         CommandParameter="{Binding Key}"
+                                         CommandParameter="{Binding ChatPartnerName}"
                                          />
                             </Grid>
                         </StackPanel>

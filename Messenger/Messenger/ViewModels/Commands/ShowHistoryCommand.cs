@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Messenger.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,7 +24,8 @@ namespace Messenger.ViewModels.Commands
         public void Execute(object parameter)
         {
             // Implement show history in usermodel to refer to
-            _startViewModel.RaiseUserIntendsToViewHistoryEvent(BaseViewModel.UserModel.ChatHistoryDictionary[parameter.ToString()]);
+            ChatHistory SearchResult = BaseViewModel.UserModel.ChatHistoryList.Find(x => x.ChatPartnerName == parameter.ToString());
+            _startViewModel.RaiseUserIntendsToViewHistoryEvent(SearchResult);
         }
     }
 }

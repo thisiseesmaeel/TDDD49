@@ -23,8 +23,7 @@ namespace Messenger.Models
             _displayName = "Ismail";
             _connectionEnded = false;
             Chatpartner = null;
-            ChatHistoryDictionary = new Dictionary<string, ChatHistory>();
-
+            ChatHistoryList = new List<ChatHistory>();
         }
 
         #region Fields
@@ -105,7 +104,7 @@ namespace Messenger.Models
             get { return _responseToRequest; }
             set { _responseToRequest = value; OnPropertyChanged("ResponseToRequest"); }
         }
-        public Dictionary <string, ChatHistory> ChatHistoryDictionary { set; get; }
+        public List <ChatHistory> ChatHistoryList { set; get; }
         #endregion
 
         private void OnPropertyChanged(string PropertyName ="")
@@ -178,10 +177,16 @@ namespace Messenger.Models
                             else if (Msg.RequestType == "Chat")
                             {
                                 Message = Msg;
-                                Chat temp = new Chat(Msg.MessageText, Msg.Sender);
-                                if (!ChatHistoryDictionary.ContainsKey(Chatpartner))
-                                    ChatHistoryDictionary[Chatpartner] = new ChatHistory(DateTime.Now);
-                                ChatHistoryDictionary[Chatpartner].ChatLog.Add(temp);
+
+                                Chat TempChat = new Chat(Msg.MessageText, Msg.Sender);
+                                ChatHistory SearchResult = ChatHistoryList.Find(x => x.ChatPartnerName == Chatpartner);
+                                if ( SearchResult == null )
+                                {
+                                    SearchResult = new ChatHistory(DateTime.Now, Chatpartner);
+                                    ChatHistoryList.Add(SearchResult);
+                                }
+                                SearchResult.ChatLog.Add(TempChat);
+                                
                             }
                             else if(Msg.RequestType == "EndConnection")
                             {
@@ -273,10 +278,15 @@ namespace Messenger.Models
                             if (ResponseObj.RequestType == "Chat")
                             {
                                 Message = ResponseObj;
-                                Chat temp = new Chat(ResponseObj.MessageText, ResponseObj.Sender);
-                                if (!ChatHistoryDictionary.ContainsKey(Chatpartner))
-                                    ChatHistoryDictionary[Chatpartner] = new ChatHistory(DateTime.Now);
-                                ChatHistoryDictionary[Chatpartner].ChatLog.Add(temp);
+
+                                Chat TempChat = new Chat(Msg.MessageText, Msg.Sender);
+                                ChatHistory SearchResult = ChatHistoryList.Find(x => x.ChatPartnerName == Chatpartner);
+                                if (SearchResult == null)
+                                {
+                                    SearchResult = new ChatHistory(DateTime.Now, Chatpartner);
+                                    ChatHistoryList.Add(SearchResult);
+                                }
+                                SearchResult.ChatLog.Add(TempChat);
 
                             }
                             else if (ResponseObj.RequestType == "EndConnection")
@@ -327,10 +337,15 @@ namespace Messenger.Models
                 stream.Write(data, 0, data.Length);
                 Msg.Sender = "Me";
 
-                Chat temp = new Chat(Msg.MessageText, Msg.Sender);
-                if (!ChatHistoryDictionary.ContainsKey(Chatpartner))
-                    ChatHistoryDictionary[Chatpartner] = new ChatHistory(DateTime.Now);
-                ChatHistoryDictionary[Chatpartner].ChatLog.Add(temp);
+                Chat TempChat = new Chat(Msg.MessageText, Msg.Sender);
+                ChatHistory SearchResult = ChatHistoryList.Find(x => x.ChatPartnerName == Chatpartner);
+                if (SearchResult == null)
+                {
+                    SearchResult = new ChatHistory(DateTime.Now, Chatpartner);
+                    ChatHistoryList.Add(SearchResult);
+                }
+                SearchResult.ChatLog.Add(TempChat);
+
                 Message = Msg;
             }
             #region Exception
@@ -380,7 +395,7 @@ namespace Messenger.Models
             TextWriter writer = null;
             try
             {
-                var contentsToWriteToFile = Newtonsoft.Json.JsonConvert.SerializeObject(ChatHistoryDictionary);
+                var contentsToWriteToFile = Newtonsoft.Json.JsonConvert.SerializeObject(ChatHistoryList);
                 writer = new StreamWriter(DatabasePath, false);
                 writer.Write(contentsToWriteToFile);
             }
@@ -399,7 +414,8 @@ namespace Messenger.Models
             {
                 reader = new StreamReader(DatabasePath);
                 var fileContents = reader.ReadToEnd();
-                ChatHistoryDictionary = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, ChatHistory>>(fileContents);
+                ChatHistoryList = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ChatHistory>>(fileContents);
+                ChatHistoryList = ChatHistoryList.OrderByDescending(x => x.Date).ToList();
             }
             catch(System.IO.FileNotFoundException e)
             {
@@ -412,6 +428,4 @@ namespace Messenger.Models
             }
         }
     }
-
-
 }
