@@ -68,6 +68,7 @@
     <Compile Include="ViewModels\Commands\ChatCommand.cs" />
     <Compile Include="ViewModels\Commands\ConnectCommand.cs" />
     <Compile Include="ViewModels\Commands\ListenCommand.cs" />
+    <Compile Include="ViewModels\Commands\SearchCommand.cs" />
     <Compile Include="ViewModels\Commands\ShowHistoryCommand.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\StartViewModel.cs" />
@@ -144,6 +145,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Views\blue-wood-texture.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Database\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

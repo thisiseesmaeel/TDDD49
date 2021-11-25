@@ -22,7 +22,7 @@ namespace Messenger.ViewModels
         {
             _chatCommand = new ChatCommand();
             _backToStartCommand = new BackToStartCommand(this);
-            UserModel.PropertyChanged += myModel_PropertyChanged;
+            UserModel.PropertyChanged += MyViewModelPropertyChanged;
             Chatlog = new ObservableCollection<Message>();
             Chatlog.CollectionChanged += Chatlog_CollectionChanged;
            
@@ -30,7 +30,7 @@ namespace Messenger.ViewModels
 
         //public delegate void SwitchToMainHandler();
         //public event SwitchToMainHandler UserIntendsToGoBackEvent;
-        private void myModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void MyViewModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {

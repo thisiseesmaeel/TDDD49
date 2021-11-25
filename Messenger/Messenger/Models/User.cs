@@ -16,21 +16,23 @@ namespace Messenger.Models
     {
         public User()
         {
-            DateTime date1 = DateTime.Now;
-            Console.WriteLine(date1.ToString("yyyy-mm-dd H:mm"));
+            // Example for how to convert time to string
+            //DateTime date1 = DateTime.Now;
+            //Console.WriteLine(date1.ToString("yyyy-mm-dd H:mm"));
             _port = 14000;
             _iP = "127.0.0.1";
             _displayName = "Ismail";
             _connectionEnded = false;
             Chatpartner = null;
             ChatHistoryList = new List<ChatHistory>();
+            ChatHistoryResultList = new List<ChatHistory>();
         }
 
         #region Fields
         public event PropertyChangedEventHandler PropertyChanged;
 
         // Relative path in which database going to be created
-        private const string DatabasePath = @"..\..\..\..\database.json";
+        private const string DatabasePath = @"..\..\Database\database.json";
 
         TcpClient client;
 
@@ -105,6 +107,13 @@ namespace Messenger.Models
             set { _responseToRequest = value; OnPropertyChanged("ResponseToRequest"); }
         }
         public List <ChatHistory> ChatHistoryList { set; get; }
+
+        private List<ChatHistory> _chatHistoryResultList;
+        public List <ChatHistory> ChatHistoryResultList
+        {
+            get { return _chatHistoryResultList; }
+            set { _chatHistoryResultList = value; OnPropertyChanged("ChatHistoryResultList"); }
+        }
         #endregion
 
         private void OnPropertyChanged(string PropertyName ="")
@@ -416,16 +425,33 @@ namespace Messenger.Models
                 var fileContents = reader.ReadToEnd();
                 ChatHistoryList = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ChatHistory>>(fileContents);
                 ChatHistoryList = ChatHistoryList.OrderByDescending(x => x.Date).ToList();
+                ChatHistoryResultList = ChatHistoryList;
             }
             catch(System.IO.FileNotFoundException e)
             {
-                Console.WriteLine("Database does not exist");
+                Console.WriteLine("Database does not exist", e);
             }
             finally
             {
                 if (reader != null)
                     reader.Close();
             }
+        }
+
+        public void Search(string query)
+        {
+            // Use linq
+            ChatHistoryResultList = (from chatHistory in ChatHistoryList
+                                        where chatHistory.ChatPartnerName.ToUpper().Contains(query.ToUpper())
+                                        select chatHistory).ToList();
+
+            
+
+            /*
+            App.Current.Dispatcher.Invoke(() => {
+
+
+            });*/
         }
     }
 }

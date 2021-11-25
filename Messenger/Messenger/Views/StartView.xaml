@@ -36,16 +36,18 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <TextBox Grid.Column="0" Grid.Row="0"
-                         Height="30"
-                         VerticalAlignment="Center"
-                         FontSize="18"/>
+            <TextBox x:Name="SearchTxtBox"
+                     Grid.Column="0" Grid.Row="0"
+                     Height="30"
+                     VerticalAlignment="Center"
+                     FontSize="18"/>
 
-            <Button  Grid.Column="1" Grid.Row="1"
-                         Content="Search"
-                         Height="30"
-                         VerticalAlignment="Center"
-                         />
+            <Button Grid.Column="1" Grid.Row="1"
+                    Content="Search"
+                    Height="30"
+                    VerticalAlignment="Center"
+                    Command="{Binding Path=SearchCommand}" 
+                    CommandParameter="{Binding Text, ElementName=SearchTxtBox, Mode=OneWay}"/>
         </Grid>
 
         <Border CornerRadius="3" BorderBrush="Gray" BorderThickness="2" DockPanel.Dock="Top"

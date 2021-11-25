@@ -19,11 +19,13 @@ namespace Messenger.ViewModels
             _listenCommand = new ListenCommand(this);
             _connectCommand = new ConnectCommand(this);
             _showHistoryCommand = new ShowHistoryCommand(this);
+            _searchCommand = new SearchCommand();
+
             if(BaseViewModel.UserModel == null)
             {
                 BaseViewModel.UserModel = new User();
-                BaseViewModel.UserModel.PropertyChanged += myModel_PropertyChanged;
             }
+            BaseViewModel.UserModel.PropertyChanged += MyViewModelPropertyChanged;
             DisplayName = UserModel.DisplayName;
             UserModel.LoadHistory();
         }
@@ -55,7 +57,10 @@ namespace Messenger.ViewModels
         }
 
         public List<ChatHistory> ChatHistory
-        { get { return UserModel.ChatHistoryList; } }
+        { 
+            get { return UserModel.ChatHistoryResultList; }
+            //set { UserModel.ChatHistoryResultList = value ; OnPropertyChanged("ChatHistory"); }
+        }
         #endregion
 
         private void OnPropertyChanged(String PropertyName)
@@ -64,7 +69,7 @@ namespace Messenger.ViewModels
                 this.PropertyChanged(this, new PropertyChangedEventArgs(PropertyName));
         }
 
-        private void myModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void MyViewModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             switch (e.PropertyName) 
             {
@@ -77,6 +82,10 @@ namespace Messenger.ViewModels
                     break;
                 case "ResponseToRequest":
                     ShowResponseToRequestMessageBox();
+                    break;
+                case "ChatHistoryResultList":
+                    Console.WriteLine("ChatHistory Property changed!");
+                    OnPropertyChanged("ChatHistory");
                     break;
                 default:
                     break;
@@ -101,7 +110,9 @@ namespace Messenger.ViewModels
                 case MessageBoxResult.Yes:
                     UserModel.AcceptRequest = true;
                     // should navigate to a new ViewModel
+                    BaseViewModel.UserModel.PropertyChanged -= MyViewModelPropertyChanged;
                     UserIntendsToChatEvent();
+
                     break;
                 case MessageBoxResult.No:
                     UserModel.AcceptRequest = false;
@@ -144,7 +155,11 @@ namespace Messenger.ViewModels
                 case MessageBoxResult.OK:
                     // should navigate to a new ViewModel
                     if (Accepted)
+                    {
+                        BaseViewModel.UserModel.PropertyChanged -= MyViewModelPropertyChanged;
                         UserIntendsToChatEvent();
+
+                    }
                     break;
                 default:
                     break;
@@ -153,6 +168,7 @@ namespace Messenger.ViewModels
 
         public void RaiseUserIntendsToViewHistoryEvent(ChatHistory chatHistoryObj)
         {
+            BaseViewModel.UserModel.PropertyChanged -= MyViewModelPropertyChanged;
             UserIntendsToViewHistoryEvent(chatHistoryObj);
         }
         #region Commands
@@ -164,6 +180,9 @@ namespace Messenger.ViewModels
 
         public ShowHistoryCommand _showHistoryCommand;
         public ICommand ShowHistoryCommand => _showHistoryCommand;
+
+        public SearchCommand _searchCommand;
+        public ICommand SearchCommand => _searchCommand;
 
         #endregion
 
