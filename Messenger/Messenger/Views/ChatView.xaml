@@ -25,19 +25,21 @@
         <Border CornerRadius="3" BorderBrush="Gray" BorderThickness="2" DockPanel.Dock="Top"
                 Grid.Column="1" Grid.Row="1"
                 Background="White">
-            <ItemsControl ItemsSource="{Binding Path=Chatlog}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel VerticalAlignment="Top"
-                                    FlowDirection="LeftToRight">
-                            <TextBlock Text="{Binding Path=Sender}"
-                                       FontWeight="Bold"/>
-                            <TextBlock Text="{Binding Path=MessageText}"
-                                       Margin="0 0 0 10"/>               
-                        </StackPanel>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <ItemsControl ItemsSource="{Binding Path=Chatlog}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel VerticalAlignment="Top"
+                                        FlowDirection="LeftToRight">
+                                <TextBlock Text="{Binding Path=Sender}"
+                                           FontWeight="Bold"/>
+                                <TextBlock Text="{Binding Path=MessageText}"
+                                           Margin="0 0 0 10"/>               
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
         </Border>
         
         <Button Content="Back"
