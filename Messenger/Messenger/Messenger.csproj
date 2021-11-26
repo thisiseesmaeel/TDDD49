@@ -65,6 +65,7 @@
     <Compile Include="ViewModels\ChatHistoryViewModel.cs" />
     <Compile Include="ViewModels\ChatViewModel.cs" />
     <Compile Include="ViewModels\Commands\BackToStartCommand.cs" />
+    <Compile Include="ViewModels\Commands\BUZZCommand.cs" />
     <Compile Include="ViewModels\Commands\ChatCommand.cs" />
     <Compile Include="ViewModels\Commands\ConnectCommand.cs" />
     <Compile Include="ViewModels\Commands\ListenCommand.cs" />

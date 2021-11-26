@@ -49,6 +49,16 @@
                 Grid.Row="1" Grid.Column="2"
                 Command="{Binding Path=BackToStartCommand}"/>
 
+        <Button Content="BUZZ"
+                Width="100"
+                Height="50"
+                FontSize="15"
+                FontWeight="Bold"
+                VerticalAlignment="Top"
+                Margin="0 80 0 0"
+                Grid.Row="1" Grid.Column="2"
+                Command="{Binding Path=BUZZCommand}"/>
+
         <Border CornerRadius="3" BorderBrush="Gray"
                 BorderThickness="2"
                 Grid.Row="2" Grid.Column="1"

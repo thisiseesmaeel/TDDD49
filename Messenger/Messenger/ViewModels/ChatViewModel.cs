@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
+using System.Media;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
@@ -22,14 +23,14 @@ namespace Messenger.ViewModels
         {
             _chatCommand = new ChatCommand();
             _backToStartCommand = new BackToStartCommand(this);
+            _buzzCommand = new BUZZCommand();
             UserModel.PropertyChanged += MyViewModelPropertyChanged;
             Chatlog = new ObservableCollection<Message>();
-            Chatlog.CollectionChanged += Chatlog_CollectionChanged;
-           
+            //Chatlog.CollectionChanged += Chatlog_CollectionChanged;
+
+
         }
 
-        //public delegate void SwitchToMainHandler();
-        //public event SwitchToMainHandler UserIntendsToGoBackEvent;
         private void MyViewModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
@@ -43,16 +44,15 @@ namespace Messenger.ViewModels
 
         }
 
+        // Do we need this? Triggered when an action affect the collection.
         static void Chatlog_CollectionChanged(object aSender, NotifyCollectionChangedEventArgs e)
         {
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
-                    Console.WriteLine("Add");
                     break;
 
                 case NotifyCollectionChangedAction.Move:
-                    Console.WriteLine("Move");
                     break;
 
                 case NotifyCollectionChangedAction.Remove:
@@ -75,6 +75,11 @@ namespace Messenger.ViewModels
 
         private BackToStartCommand _backToStartCommand;
         public ICommand BackToStartCommand => _backToStartCommand;
+
+        private BUZZCommand _buzzCommand;
+
+        public ICommand BUZZCommand => _buzzCommand;
+
         #endregion
     }
 }

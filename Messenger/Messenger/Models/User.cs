@@ -9,6 +9,7 @@ using System.Net;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Media;
 
 namespace Messenger.Models
 {
@@ -205,6 +206,11 @@ namespace Messenger.Models
                                 client.Close();
                                 break;
                             }
+                            else if(Msg.RequestType == "BUZZ")
+                            {
+                                // Play a sound
+                                SystemSounds.Beep.Play();
+                            }
                         }
                     }
                 }
@@ -307,6 +313,11 @@ namespace Messenger.Models
                                 Console.WriteLine("Done connecting...");
                                 break;
                             }
+                            else if(ResponseObj.RequestType == "BUZZ")
+                            {
+                                // Play a sound
+                                SystemSounds.Beep.Play();
+                            }
 
                         }
                     }   
@@ -356,6 +367,32 @@ namespace Messenger.Models
                 SearchResult.ChatLog.Add(TempChat);
 
                 Message = Msg;
+            }
+            #region Exception
+            catch (ArgumentNullException e)
+            {
+                Console.WriteLine("ArgumentNullException: {0}", e);
+            }
+            catch (SocketException e)
+            {
+                Console.WriteLine("SocketException: {0}", e);
+            }
+            #endregion
+        }
+
+        public void BUZZ()
+        {
+
+            try
+            {
+                Message BuzzMessage = new Message("BUZZ", DisplayName, DateTime.Now, "");
+                string message = JsonConvert.SerializeObject(BuzzMessage);
+
+                Byte[] data = System.Text.Encoding.ASCII.GetBytes(message);
+
+                NetworkStream stream = client.GetStream();
+
+                stream.Write(data, 0, data.Length);
             }
             #region Exception
             catch (ArgumentNullException e)
