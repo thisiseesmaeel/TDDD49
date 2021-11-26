@@ -21,6 +21,13 @@ namespace Messenger.ViewModels
         public event PropertyChangedEventHandler PropertyChanged;
 
         private BaseViewModel _selectedViewModel;
+
+
+        // To send a signal to parent window when BUZZ is accured.
+        public delegate void ShakeMyParentWindowHandler();
+        public event ShakeMyParentWindowHandler ShakeMyParentWindowEvent;
+        //
+
         public BaseViewModel SelectedViewModel
         {
             get { return _selectedViewModel; }
@@ -43,6 +50,7 @@ namespace Messenger.ViewModels
         {
             var chatViewModel = new ChatViewModel();
             chatViewModel.UserIntendsToGoBackEvent += new SwitchToStartHandler(GoToStartEventHandler);
+            chatViewModel.ShakeMyParentWindowEvent += new ChatViewModel.ShakeMyParentWindowHandler(RaiseShakeMyParentWindowEvent);
             SelectedViewModel = chatViewModel;
         }
 
@@ -59,6 +67,11 @@ namespace Messenger.ViewModels
             var chatHistoryViewModel = new ChatHistoryViewModel(chatHistoryObj);
             chatHistoryViewModel.UserIntendsToGoBackEvent += new SwitchToStartHandler(GoToStartEventHandler);
             SelectedViewModel = chatHistoryViewModel;
+        }
+
+        private void RaiseShakeMyParentWindowEvent()
+        {
+            ShakeMyParentWindowEvent.Invoke();
         }
     }
 }

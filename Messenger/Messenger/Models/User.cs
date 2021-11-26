@@ -115,6 +115,16 @@ namespace Messenger.Models
             get { return _chatHistoryResultList; }
             set { _chatHistoryResultList = value; OnPropertyChanged("ChatHistoryResultList"); }
         }
+
+        private bool _buzz;
+
+        public bool Buzz
+        {
+            get { return _buzz; }
+            set { _buzz = value; OnPropertyChanged("Buzz"); }
+        }
+
+
         #endregion
 
         private void OnPropertyChanged(string PropertyName ="")
@@ -208,8 +218,10 @@ namespace Messenger.Models
                             }
                             else if(Msg.RequestType == "BUZZ")
                             {
-                                // Play a sound
+                                // Play a sound and notify Buzz property changed to viewmodel in
+                                // order to shake window
                                 SystemSounds.Beep.Play();
+                                Buzz = true;
                             }
                         }
                     }
@@ -315,8 +327,10 @@ namespace Messenger.Models
                             }
                             else if(ResponseObj.RequestType == "BUZZ")
                             {
-                                // Play a sound
+                                // Play a sound and notify Buzz property changed to viewmodel in
+                                // order to shake window
                                 SystemSounds.Beep.Play();
+                                Buzz = true;
                             }
 
                         }
@@ -382,7 +396,6 @@ namespace Messenger.Models
 
         public void BUZZ()
         {
-
             try
             {
                 Message BuzzMessage = new Message("BUZZ", DisplayName, DateTime.Now, "");

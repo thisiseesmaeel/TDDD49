@@ -23,13 +23,17 @@ namespace Messenger.ViewModels
         {
             _chatCommand = new ChatCommand();
             _backToStartCommand = new BackToStartCommand(this);
-            _buzzCommand = new BUZZCommand();
+            _buzzCommand = new BUZZCommand(this);
             UserModel.PropertyChanged += MyViewModelPropertyChanged;
             Chatlog = new ObservableCollection<Message>();
             //Chatlog.CollectionChanged += Chatlog_CollectionChanged;
 
-
         }
+
+        // To send a signal to parent class (which is MainVieModel) when BUZZ is accured.
+        public delegate void ShakeMyParentWindowHandler();
+        public event ShakeMyParentWindowHandler ShakeMyParentWindowEvent;
+        //
 
         private void MyViewModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
@@ -37,6 +41,9 @@ namespace Messenger.ViewModels
             {
                 case "Message":
                     App.Current.Dispatcher.Invoke(() => { Chatlog.Add(UserModel.Message); });
+                    break;
+                case "Buzz":
+                    App.Current.Dispatcher.Invoke(() => { ShakeMyParentWindowEvent.Invoke(); });
                     break;
                 default:
                     break;

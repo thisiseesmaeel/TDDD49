@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,10 +26,34 @@ namespace Messenger
         public MainWindow()
         {
             InitializeComponent();
-            MainViewModel context = new MainViewModel();
-            DataContext = context;
-            Closing += context.OnWindowClosing;
+            MainViewModel Context = new MainViewModel();
+            DataContext = Context;
+            Closing += Context.OnWindowClosing;
+            Context.ShakeMyParentWindowEvent += new MainViewModel.ShakeMyParentWindowHandler(ShakeWindow);
         }
 
+        public void ShakeWindow()
+        {
+            bool condition = true;
+            App.Current.Dispatcher.Invoke(() =>
+            {
+                for(int i = 0; i < 10; i++)
+                {
+                    if(condition)
+                    {
+                        this.Left += 10;
+                        condition = false;
+                    }
+                    else
+                    {
+                        this.Left -= 10;
+                        condition = true;
+                    }
+                    Thread.Sleep(40);
+                }
+
+
+            });
+        }
     }
 }

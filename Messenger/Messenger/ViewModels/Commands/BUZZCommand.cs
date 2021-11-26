@@ -9,9 +9,11 @@ namespace Messenger.ViewModels.Commands
 {
     public class BUZZCommand : ICommand
     {
-        public BUZZCommand()
-        {
+        ChatViewModel _chatViewModel;
 
+        public BUZZCommand(ChatViewModel chatViewModel)
+        {
+            _chatViewModel = chatViewModel;
         }
 
         public event EventHandler CanExecuteChanged;
@@ -24,6 +26,6 @@ namespace Messenger.ViewModels.Commands
         public void Execute(object parameter)
         {
             BaseViewModel.UserModel.BUZZ();
-;        }
+;       }
     }
 }
