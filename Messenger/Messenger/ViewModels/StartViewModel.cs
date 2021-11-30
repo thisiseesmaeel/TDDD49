@@ -171,6 +171,7 @@ namespace Messenger.ViewModels
             BaseViewModel.UserModel.PropertyChanged -= MyViewModelPropertyChanged;
             UserIntendsToViewHistoryEvent(chatHistoryObj);
         }
+
         #region Commands
         private ListenCommand _listenCommand;
         public ICommand ListenCommand => _listenCommand;
@@ -185,6 +186,5 @@ namespace Messenger.ViewModels
         public ICommand SearchCommand => _searchCommand;
 
         #endregion
-
     }
 }

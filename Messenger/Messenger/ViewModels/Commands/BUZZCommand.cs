@@ -9,23 +9,34 @@ namespace Messenger.ViewModels.Commands
 {
     public class BUZZCommand : ICommand
     {
-        ChatViewModel _chatViewModel;
-
         public BUZZCommand(ChatViewModel chatViewModel)
         {
-            _chatViewModel = chatViewModel;
+           
+            BaseViewModel.UserModel.PropertyChanged += OnViewModelPropertyChanged;
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler CanExecuteChanged
+        {
+            add { CommandManager.RequerySuggested += value; }
+            remove { CommandManager.RequerySuggested -= value; }
+        }
+
 
         public bool CanExecute(object parameter)
         {
-            return true;
+            return !BaseViewModel.UserModel.ConnectionEnded;
         }
 
         public void Execute(object parameter)
         {
             BaseViewModel.UserModel.BUZZ();
 ;       }
+
+
+        private void OnViewModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "Buzz")
+                App.Current.Dispatcher.Invoke(() => { CanExecute(null); });
+        }
     }
 }

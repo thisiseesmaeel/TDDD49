@@ -22,8 +22,6 @@ namespace Messenger.Models
             //Console.WriteLine(date1.ToString("yyyy-mm-dd H:mm"));
             _port = 14000;
             _iP = "127.0.0.1";
-            _displayName = "Ismail";
-            _connectionEnded = false;
             Chatpartner = null;
             ChatHistoryList = new List<ChatHistory>();
             ChatHistoryResultList = new List<ChatHistory>();
@@ -37,7 +35,13 @@ namespace Messenger.Models
 
         TcpClient client;
 
-        bool _connectionEnded;
+        private bool _connectionEnded;
+
+        public bool ConnectionEnded
+        {
+            get { return _connectionEnded; }
+            set { _connectionEnded = value; OnPropertyChanged("ConnectionEnded"); }
+        }
 
         public string Chatpartner { get; set; }
 
@@ -138,7 +142,6 @@ namespace Messenger.Models
             Action action = () =>
             {
                 TcpListener server = null;
-                Console.WriteLine("Listen clicked...");
                 try
                 {
                     Int32 port = Port;
@@ -151,14 +154,11 @@ namespace Messenger.Models
                     Byte[] bytes = new Byte[256];
                     String data = null;
 
-                    _connectionEnded = false;
+                    ConnectionEnded = false;
                     // Enter the listening loop.
-                    while (!_connectionEnded)
+                    while (!ConnectionEnded)
                     {
-                        Console.Write(DisplayName.ToString() + " waiting for a connection... ");
-
                         client = server.AcceptTcpClient();
-                        Console.WriteLine("Connected!");
 
                         data = null;
                         NetworkStream stream = client.GetStream();
@@ -212,7 +212,7 @@ namespace Messenger.Models
                             {
                                 Msg = new Message("Chat", Msg.Sender, new DateTime(), "Left the room.");
                                 Message = Msg;
-                                _connectionEnded = true;
+                                ConnectionEnded = true;
                                 client.Close();
                                 break;
                             }
@@ -262,7 +262,6 @@ namespace Messenger.Models
             
             Action action = () =>
             {
-                Console.WriteLine("Connect clicked...");
                 try
                 {
                     Int32 port = Port;
@@ -287,7 +286,7 @@ namespace Messenger.Models
                         // Close everything.
                         stream.Close();
                         client.Close();
-                        _connectionEnded = true;
+                        ConnectionEnded = true;
                     }
                     else // Request Accepted
                     {
@@ -295,7 +294,7 @@ namespace Messenger.Models
                         // Feedback here
                         ResponseToRequest = true;
 
-                        _connectionEnded = false;
+                        ConnectionEnded = false;
 
                         // Read the batch of the TcpServer response bytes.
                         while ((bytes = stream.Read(data, 0, data.Length)) != 0)
@@ -318,11 +317,10 @@ namespace Messenger.Models
                             }
                             else if (ResponseObj.RequestType == "EndConnection")
                             {
-                                _connectionEnded = true;
+                                ConnectionEnded = true;
                                 client.Close();
                                 ResponseObj = new Message("Chat", ResponseObj.Sender, new DateTime(), "Left the room.");
                                 Message = ResponseObj;
-                                Console.WriteLine("Done connecting...");
                                 break;
                             }
                             else if(ResponseObj.RequestType == "BUZZ")
@@ -435,7 +433,7 @@ namespace Messenger.Models
                     //client.Close();
                 }
                 SaveHistory();
-                _connectionEnded = true;
+                ConnectionEnded = true;
             }
             #region Exception
             catch (ArgumentNullException e)

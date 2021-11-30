@@ -15,26 +15,41 @@ using Messenger.ViewModels.Commands;
 
 namespace Messenger.ViewModels
 {
-    public class ChatViewModel : BaseViewModel
+    public class ChatViewModel : BaseViewModel, INotifyPropertyChanged
     {
         public ObservableCollection<Message> Chatlog { set; get; }
 
         public ChatViewModel()
         {
-            _chatCommand = new ChatCommand();
+            _chatCommand = new ChatCommand(this);
             _backToStartCommand = new BackToStartCommand(this);
             _buzzCommand = new BUZZCommand(this);
             UserModel.PropertyChanged += MyViewModelPropertyChanged;
             Chatlog = new ObservableCollection<Message>();
             //Chatlog.CollectionChanged += Chatlog_CollectionChanged;
+            
 
         }
+        private string _messageToSend;
+
+        public string MessageToSend
+        {
+            get { return _messageToSend; }
+            set { _messageToSend = value; OnPropertyChanged("MessageToSend"); }
+        }
+
 
         // To send a signal to parent class (which is MainVieModel) when BUZZ is accured.
         public delegate void ShakeMyParentWindowHandler();
         public event ShakeMyParentWindowHandler ShakeMyParentWindowEvent;
-        //
+        public event PropertyChangedEventHandler PropertyChanged;
 
+        //
+        private void OnPropertyChanged(String PropertyName)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(PropertyName));
+        }
         private void MyViewModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)

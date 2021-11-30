@@ -9,16 +9,34 @@ namespace Messenger.ViewModels.Commands
 {
     public class ChatCommand : ICommand
     {
-        public event EventHandler CanExecuteChanged;
+        ChatViewModel _chatViewModel;
+        public ChatCommand(ChatViewModel chatViewModel)
+        {
+            _chatViewModel = chatViewModel;
+            BaseViewModel.UserModel.PropertyChanged += OnViewModelPropertyChanged;
+            _chatViewModel.PropertyChanged += OnViewModelPropertyChanged;
+        }
+        public event EventHandler CanExecuteChanged
+        {
+            add { CommandManager.RequerySuggested += value; }
+            remove { CommandManager.RequerySuggested -= value; }
+        }
 
         public bool CanExecute(object parameter)
         {
-            return true;
+
+            return !BaseViewModel.UserModel.ConnectionEnded && !string.IsNullOrEmpty(_chatViewModel.MessageToSend);
         }
 
         public void Execute(object parameter)
         {
             BaseViewModel.UserModel.Chat(parameter.ToString());
+        }
+  
+        private void OnViewModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if( e.PropertyName ==  "ConnectionEnded" || e.PropertyName == "MessageToSend")
+                App.Current.Dispatcher.Invoke(() => { CanExecute(null); });
         }
     }
 }
