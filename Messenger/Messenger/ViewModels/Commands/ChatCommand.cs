@@ -30,7 +30,8 @@ namespace Messenger.ViewModels.Commands
 
         public void Execute(object parameter)
         {
-            BaseViewModel.UserModel.Chat(parameter.ToString());
+            BaseViewModel.UserModel.Chat(_chatViewModel.MessageToSend);
+            _chatViewModel.MessageToSend = "";
         }
   
         private void OnViewModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

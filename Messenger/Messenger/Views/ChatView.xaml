@@ -76,8 +76,7 @@
                 FontSize="15"
                 FontWeight="Bold"
                 Grid.Row="2" Grid.Column="2"
-                Command="{Binding Path=ChatCommand}" 
-                CommandParameter="{Binding Text, ElementName=InputField, Mode=OneWay}"/>
+                Command="{Binding Path=ChatCommand}"/>
 
 
 
