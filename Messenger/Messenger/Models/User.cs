@@ -17,9 +17,6 @@ namespace Messenger.Models
     {
         public User()
         {
-            // Example for how to convert time to string
-            //DateTime date1 = DateTime.Now;
-            //Console.WriteLine(date1.ToString("yyyy-mm-dd H:mm"));
             DisplayName = "";
             _port = "14000";
             _iP = "127.0.0.1";
@@ -34,7 +31,7 @@ namespace Messenger.Models
         // Relative path in which database going to be created
         private const string DatabasePath = @"..\..\Database\database.json";
 
-        TcpClient client;
+        private TcpClient client;
 
         private bool _connectionEnded;
 
@@ -168,7 +165,7 @@ namespace Messenger.Models
                         // Loop to receive all the data sent by the client.
                         while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
                         {
-                            data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
+                            data = System.Text.Encoding.UTF8.GetString(bytes, 0, i);
 
                             Message Msg = JsonConvert.DeserializeObject<Message>(data);
                             if (Msg.RequestType == "Establish")
@@ -180,15 +177,15 @@ namespace Messenger.Models
                                 {
                                     // Send back a response.
                                     Message response = new Message("RequestAccepted", DisplayName, new DateTime(), "");
-                                    byte[] msg = System.Text.Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(response));
+                                    byte[] msg = System.Text.Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(response));
                                     stream.Write(msg, 0, msg.Length);
                                 }
                                 else
                                 {
                                     Chatpartner = null;
                                     // Send back a response.
-                                    Message response = new Message("RequestDenied", DisplayName, new DateTime(), " ");
-                                    byte[] msg = System.Text.Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(response));
+                                    Message response = new Message("RequestDenied", DisplayName, new DateTime(), "");
+                                    byte[] msg = System.Text.Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(response));
                                     stream.Write(msg, 0, msg.Length);
                                     client.Close();
                                     break;
@@ -267,7 +264,7 @@ namespace Messenger.Models
                 {
                     Int32 port = Int32.Parse(Port);
                     client = new TcpClient(IP, port);
-                    Byte[] data = System.Text.Encoding.ASCII.GetBytes(message);
+                    Byte[] data = System.Text.Encoding.UTF8.GetBytes(message);
                     NetworkStream stream = client.GetStream();
                     stream.Write(data, 0, data.Length);
                     data = new Byte[256];
@@ -276,7 +273,7 @@ namespace Messenger.Models
                     Int32 bytes;
 
                     bytes = stream.Read(data, 0, data.Length);
-                    ResponseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
+                    ResponseData = System.Text.Encoding.UTF8.GetString(data, 0, bytes);
                     ResponseObj = JsonConvert.DeserializeObject<Message>(ResponseData);
 
                     if (ResponseObj.RequestType == "RequestDenied")
@@ -300,7 +297,7 @@ namespace Messenger.Models
                         // Read the batch of the TcpServer response bytes.
                         while ((bytes = stream.Read(data, 0, data.Length)) != 0)
                         {
-                            ResponseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
+                            ResponseData = System.Text.Encoding.UTF8.GetString(data, 0, bytes);
                             ResponseObj = JsonConvert.DeserializeObject<Message>(ResponseData);
                             if (ResponseObj.RequestType == "Chat")
                             {
@@ -361,9 +358,9 @@ namespace Messenger.Models
             try
             {
                 Message Msg = new Message("Chat", DisplayName, new DateTime(), message);
-                message = JsonConvert.SerializeObject(Msg);
+                message = JsonConvert.SerializeObject(Msg, Formatting.Indented);
 
-                Byte[] data = System.Text.Encoding.ASCII.GetBytes(message);
+                Byte[] data = System.Text.Encoding.UTF8.GetBytes(message);
 
                 NetworkStream stream = client.GetStream();
 
@@ -400,7 +397,7 @@ namespace Messenger.Models
                 Message BuzzMessage = new Message("BUZZ", DisplayName, DateTime.Now, "");
                 string message = JsonConvert.SerializeObject(BuzzMessage);
 
-                Byte[] data = System.Text.Encoding.ASCII.GetBytes(message);
+                Byte[] data = System.Text.Encoding.UTF8.GetBytes(message);
 
                 NetworkStream stream = client.GetStream();
 
@@ -425,7 +422,7 @@ namespace Messenger.Models
                 if(client !=null && client.Connected)
                 {
                     Message Msg = new Message("EndConnection", DisplayName, new DateTime(), "");
-                    Byte[] data = System.Text.Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(Msg));
+                    Byte[] data = System.Text.Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(Msg));
                     NetworkStream stream = client.GetStream();
                     stream.Write(data, 0, data.Length);
 

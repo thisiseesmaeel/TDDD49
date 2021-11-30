@@ -17,6 +17,8 @@ namespace Messenger.Models
         public List<Chat> ChatLog { get; set; }
         public DateTime Date { get; set; }
 
+        public string DateString { get { return Date.ToString("yyyy-MM-dd H:mm"); } }
+
         public string ChatPartnerName { get; set; }
 
     }
