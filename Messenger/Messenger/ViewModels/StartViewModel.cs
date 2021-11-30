@@ -28,6 +28,7 @@ namespace Messenger.ViewModels
             BaseViewModel.UserModel.PropertyChanged += MyViewModelPropertyChanged;
             DisplayName = UserModel.DisplayName;
             UserModel.LoadHistory();
+            ErrorMessage = "";
         }
 
         #region Fields
@@ -50,11 +51,20 @@ namespace Messenger.ViewModels
             get { return UserModel.IP; }
             set { UserModel.IP = value; OnPropertyChanged("IP"); }
         }
-        public int Port
+        public string Port
         {
             get { return UserModel.Port; }
             set { UserModel.Port = value; OnPropertyChanged("Port"); }
         }
+
+        private string _errorMessage;
+
+        public string ErrorMessage
+        {
+            get { return _errorMessage; }
+            set { _errorMessage = value; OnPropertyChanged("ErrorMessage"); }
+        }
+
 
         public List<ChatHistory> ChatHistory
         { 

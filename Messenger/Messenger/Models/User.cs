@@ -20,7 +20,8 @@ namespace Messenger.Models
             // Example for how to convert time to string
             //DateTime date1 = DateTime.Now;
             //Console.WriteLine(date1.ToString("yyyy-mm-dd H:mm"));
-            _port = 14000;
+            DisplayName = "";
+            _port = "14000";
             _iP = "127.0.0.1";
             Chatpartner = null;
             ChatHistoryList = new List<ChatHistory>();
@@ -61,8 +62,8 @@ namespace Messenger.Models
         }
 
 
-        private int _port;
-        public int Port
+        private string _port;
+        public string Port
         {
             get { return _port; }
             set { _port = value; OnPropertyChanged("Port"); }
@@ -144,7 +145,7 @@ namespace Messenger.Models
                 TcpListener server = null;
                 try
                 {
-                    Int32 port = Port;
+                    Int32 port = Int32.Parse(Port);
                     IPAddress localAddr = IPAddress.Parse(IP);
 
                     server = new TcpListener(localAddr, port);
@@ -264,7 +265,7 @@ namespace Messenger.Models
             {
                 try
                 {
-                    Int32 port = Port;
+                    Int32 port = Int32.Parse(Port);
                     client = new TcpClient(IP, port);
                     Byte[] data = System.Text.Encoding.ASCII.GetBytes(message);
                     NetworkStream stream = client.GetStream();
