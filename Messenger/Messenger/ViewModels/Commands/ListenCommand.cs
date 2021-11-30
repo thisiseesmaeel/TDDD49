@@ -32,7 +32,8 @@ namespace Messenger.ViewModels.Commands
         {
 
             return !string.IsNullOrEmpty(_startViewModel.DisplayName) && !string.IsNullOrEmpty(_startViewModel.IP)
-                && !string.IsNullOrEmpty(_startViewModel.Port) && _startViewModel.ErrorMessage != "Listening...";
+                && !string.IsNullOrEmpty(_startViewModel.Port) && _startViewModel.ErrorMessage != "Listening..."
+                && _startViewModel.ErrorMessage != "Connecting...";
         }
 
         public void Execute(object parameter)

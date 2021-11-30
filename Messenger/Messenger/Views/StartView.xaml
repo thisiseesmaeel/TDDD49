@@ -120,7 +120,7 @@
                    VerticalAlignment="Center"
                    FontWeight="Thin"
                    Width="200"
-                   Text="{Binding Path=Port}"
+                   Text="{Binding Path=Port, UpdateSourceTrigger=PropertyChanged}"
                    FontSize="20"/>
         
         <TextBlock Text="Enter IP"
@@ -133,7 +133,7 @@
                    VerticalAlignment="Center"
                    FontWeight="Thin"
                    Width="200"
-                   Text="{Binding Path=IP}"
+                   Text="{Binding Path=IP, UpdateSourceTrigger=PropertyChanged}"
                    FontSize="20"/>
 
         <TextBlock Grid.Row="5"
