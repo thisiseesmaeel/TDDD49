@@ -33,6 +33,8 @@
                                         FlowDirection="LeftToRight">
                                 <TextBlock Text="{Binding Path=Sender}"
                                            FontWeight="Bold"/>
+                                <TextBlock Text="{Binding Path=DateString}"
+                                           FontSize="10"/>
                                 <TextBlock Text="{Binding Path=MessageText}"
                                            Margin="0 0 0 10"/>               
                             </StackPanel>

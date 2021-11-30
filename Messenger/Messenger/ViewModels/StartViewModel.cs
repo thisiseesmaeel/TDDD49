@@ -126,6 +126,7 @@ namespace Messenger.ViewModels
                     break;
                 case MessageBoxResult.No:
                     UserModel.AcceptRequest = false;
+                    ErrorMessage = "";
                     break;
                 default:
                     UserModel.AcceptRequest = false;
@@ -162,20 +163,22 @@ namespace Messenger.ViewModels
             
             MessageBoxResult result = MessageBox.Show(messageBoxText, caption, button, icon);
             // Process message box results
-            switch (result)
+            if(result == MessageBoxResult.OK)
             {
-                case MessageBoxResult.OK:
-                    // should navigate to a new ViewModel
-                    if (Accepted)
-                    {
-                        BaseViewModel.UserModel.PropertyChanged -= MyViewModelPropertyChanged;
-                        UserIntendsToChatEvent();
+                // should navigate to a new ViewModel
+                if (Accepted)
+                {
+                    BaseViewModel.UserModel.PropertyChanged -= MyViewModelPropertyChanged;
+                    UserIntendsToChatEvent();
+                }
+                else
+                {
+                    ErrorMessage = "";
+                }
 
-                    }
-                    break;
-                default:
-                    break;
             }
+               
+            
         }
 
         public void RaiseUserIntendsToViewHistoryEvent(ChatHistory chatHistoryObj)

@@ -21,6 +21,7 @@ namespace Messenger.Models
         public string Sender { get; set; }
 
         public DateTime Date { get; set; }
+        public string DateString { get { return Date.ToString("yyyy-MM-dd H:mm"); } }
 
         public string MessageText { get; set; }
 

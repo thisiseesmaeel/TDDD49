@@ -176,7 +176,7 @@ namespace Messenger.Models
                                 if (AcceptRequest)
                                 {
                                     // Send back a response.
-                                    Message response = new Message("RequestAccepted", DisplayName, new DateTime(), "");
+                                    Message response = new Message("RequestAccepted", DisplayName, DateTime.Now, "");
                                     byte[] msg = System.Text.Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(response));
                                     stream.Write(msg, 0, msg.Length);
                                 }
@@ -184,7 +184,7 @@ namespace Messenger.Models
                                 {
                                     Chatpartner = null;
                                     // Send back a response.
-                                    Message response = new Message("RequestDenied", DisplayName, new DateTime(), "");
+                                    Message response = new Message("RequestDenied", DisplayName, DateTime.Now, "");
                                     byte[] msg = System.Text.Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(response));
                                     stream.Write(msg, 0, msg.Length);
                                     client.Close();
@@ -196,7 +196,7 @@ namespace Messenger.Models
                             {
                                 Message = Msg;
 
-                                Chat TempChat = new Chat(Msg.MessageText, Msg.Sender);
+                                Chat TempChat = new Chat(Msg.MessageText, Msg.Sender, DateTime.Now);
                                 ChatHistory SearchResult = ChatHistoryList.Find(x => x.ChatPartnerName == Chatpartner);
                                 if ( SearchResult == null )
                                 {
@@ -208,7 +208,7 @@ namespace Messenger.Models
                             }
                             else if(Msg.RequestType == "EndConnection")
                             {
-                                Msg = new Message("Chat", Msg.Sender, new DateTime(), "Left the room.");
+                                Msg = new Message("Chat", Msg.Sender, DateTime.Now, "Left the room.");
                                 Message = Msg;
                                 ConnectionEnded = true;
                                 client.Close();
@@ -255,7 +255,7 @@ namespace Messenger.Models
 
         public void Connect()
         {
-            Message Msg = new Message("Establish", DisplayName, new DateTime(), "");
+            Message Msg = new Message("Establish", DisplayName, DateTime.Now, "");
             string message = JsonConvert.SerializeObject(Msg);
             
             Action action = () =>
@@ -303,7 +303,7 @@ namespace Messenger.Models
                             {
                                 Message = ResponseObj;
 
-                                Chat TempChat = new Chat(Msg.MessageText, Msg.Sender);
+                                Chat TempChat = new Chat(Msg.MessageText, Msg.Sender, DateTime.Now);
                                 ChatHistory SearchResult = ChatHistoryList.Find(x => x.ChatPartnerName == Chatpartner);
                                 if (SearchResult == null)
                                 {
@@ -317,7 +317,7 @@ namespace Messenger.Models
                             {
                                 ConnectionEnded = true;
                                 client.Close();
-                                ResponseObj = new Message("Chat", ResponseObj.Sender, new DateTime(), "Left the room.");
+                                ResponseObj = new Message("Chat", ResponseObj.Sender, DateTime.Now, "Left the room.");
                                 Message = ResponseObj;
                                 break;
                             }
@@ -357,7 +357,7 @@ namespace Messenger.Models
         {
             try
             {
-                Message Msg = new Message("Chat", DisplayName, new DateTime(), message);
+                Message Msg = new Message("Chat", DisplayName, DateTime.Now, message);
                 message = JsonConvert.SerializeObject(Msg, Formatting.Indented);
 
                 Byte[] data = System.Text.Encoding.UTF8.GetBytes(message);
@@ -367,7 +367,7 @@ namespace Messenger.Models
                 stream.Write(data, 0, data.Length);
                 Msg.Sender = "Me";
 
-                Chat TempChat = new Chat(Msg.MessageText, Msg.Sender);
+                Chat TempChat = new Chat(Msg.MessageText, Msg.Sender, DateTime.Now);
                 ChatHistory SearchResult = ChatHistoryList.Find(x => x.ChatPartnerName == Chatpartner);
                 if (SearchResult == null)
                 {
@@ -421,7 +421,7 @@ namespace Messenger.Models
             {
                 if(client !=null && client.Connected)
                 {
-                    Message Msg = new Message("EndConnection", DisplayName, new DateTime(), "");
+                    Message Msg = new Message("EndConnection", DisplayName, DateTime.Now, "");
                     Byte[] data = System.Text.Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(Msg));
                     NetworkStream stream = client.GetStream();
                     stream.Write(data, 0, data.Length);
